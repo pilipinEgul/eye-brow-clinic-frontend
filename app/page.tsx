@@ -1,65 +1,302 @@
 import Image from "next/image";
+import Link from "next/link";
+import { api } from "@/lib/api";
+import { ServiceCard } from "@/components/ServiceCard";
+import { TestimonialSlider } from "@/components/TestimonialSlider";
+import { SectionHeading } from "@/components/SectionHeading";
+import { FaqList } from "@/components/FaqList";
+import { site } from "@/lib/site";
 
-export default function Home() {
+export const revalidate = 300;
+
+const trustBadges = [
+  { icon: "★", label: "5.0 Google reviews" },
+  { icon: "✦", label: "Medical-grade hygiene" },
+  { icon: "♡", label: "Vegan pigments" },
+];
+
+const whyPoints = [
+  {
+    icon: "✎",
+    title: "Certified artistry",
+    body: "Trained in microblading, PMU and aesthetic facials.",
+  },
+  {
+    icon: "✦",
+    title: "Premium pigments",
+    body: "Vegan, hypoallergenic, ophthalmologist tested.",
+  },
+  {
+    icon: "✚",
+    title: "Medical-grade hygiene",
+    body: "Single-use needles and full sterilisation.",
+  },
+  {
+    icon: "₱",
+    title: "Honest pricing",
+    body: "Transparent rates, GCash & Maya friendly.",
+  },
+];
+
+export default async function Home() {
+  const [services, testimonials, faqs] = await Promise.all([
+    api.services({ featured: true, per_page: 6 }),
+    api.testimonials({ featured: true, per_page: 6 }),
+    api.faqs({ general: true }),
+  ]);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <>
+      {/* Hero */}
+      <section className="relative overflow-hidden bg-cream-grain">
+        {/* Decorative warm blobs */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -left-40 top-0 h-[28rem] w-[28rem] rounded-full bg-blush-200/50 blur-3xl"
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -right-32 top-32 h-[32rem] w-[32rem] rounded-full bg-nude-200/60 blur-3xl"
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute bottom-10 left-1/3 h-72 w-72 rounded-full bg-terracotta-300/30 blur-3xl"
+        />
+
+        <div className="container-x relative grid items-center gap-12 pt-14 pb-24 lg:grid-cols-[1.05fr_1fr] lg:gap-16 lg:pt-24 lg:pb-28">
+          <div className="fade-up">
+            <div className="eyebrow">Imus · Cavite · Philippines</div>
+            <h1 className="mt-4 font-display text-[2.75rem] leading-[1.05] text-ink-900 sm:text-6xl lg:text-[4.5rem]">
+              Beauty,{" "}
+              <span className="relative inline-block">
+                <span className="relative z-10 italic text-terracotta-500">refined.</span>
+                <span
+                  aria-hidden
+                  className="absolute inset-x-0 bottom-1 -z-0 h-3 rounded-full bg-blush-200/70"
+                />
+              </span>
+              <br />
+              <span className="text-ink-700">brows that feel like you.</span>
+            </h1>
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-ink-500">
+              From hyper-realistic microblading to glow-restoring facials —
+              Emcey Brows blends artistry, premium pigments and a calming
+              studio experience.
+            </p>
+
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link href="/book" className="btn btn-primary">
+                Book Appointment
+                <span aria-hidden>→</span>
+              </Link>
+              <Link href="/services" className="btn btn-secondary">
+                View Services
+              </Link>
+            </div>
+
+            <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 text-xs uppercase tracking-[0.28em] text-ink-500">
+              {trustBadges.map((b) => (
+                <span key={b.label} className="flex items-center gap-2">
+                  <span className="text-terracotta-500" aria-hidden>
+                    {b.icon}
+                  </span>
+                  {b.label}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Hero collage */}
+          <div className="relative fade-up-delay-2">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4">
+              <div className="relative aspect-[3/4] overflow-hidden rounded-[2rem] bg-gradient-to-br from-blush-200 via-blush-300 to-terracotta-400 shadow-warm">
+                <Image
+                  src="/images/hero/signature.jpg"
+                  alt="Emcey Brows signature treatment — Imus, Cavite"
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 50vw, 400px"
+                  className="object-cover"
+                />
+                <span className="absolute left-4 top-4 chip bg-white/85 z-10">Signature</span>
+              </div>
+              <div className="space-y-3 sm:space-y-4">
+                <div className="relative aspect-square overflow-hidden rounded-[2rem] bg-gradient-to-br from-nude-200 to-gold-400/60 shadow-soft float-slow">
+                  <Image
+                    src="/images/hero/tile-1.jpg"
+                    alt="Emcey Brows studio — Imus, Cavite"
+                    fill
+                    sizes="(max-width: 1024px) 25vw, 200px"
+                    className="object-cover"
+                  />
+                </div>
+                <div className="relative aspect-square overflow-hidden rounded-[2rem] bg-gradient-to-br from-blush-100 to-blush-200 shadow-soft">
+                  <Image
+                    src="/images/hero/tile-2.jpg"
+                    alt="Brow treatment by Emcey Brows — Imus, Cavite"
+                    fill
+                    sizes="(max-width: 1024px) 25vw, 200px"
+                    className="object-cover"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Floating stat card */}
+            <div className="glass absolute -bottom-8 left-4 right-4 rounded-3xl p-5 shadow-warm sm:left-8 sm:right-8">
+              <div className="flex items-center gap-4">
+                <div className="flex -space-x-2">
+                  {["#f5c8a8", "#e4cba9", "#eaa37a"].map((c) => (
+                    <span
+                      key={c}
+                      aria-hidden
+                      className="h-9 w-9 rounded-full border-2 border-white"
+                      style={{ background: c }}
+                    />
+                  ))}
+                </div>
+                <div className="h-10 w-px bg-nude-200" />
+                <div>
+                  <div className="font-display text-2xl text-ink-900">1,200+</div>
+                  <div className="text-[10px] uppercase tracking-[0.3em] text-ink-500">
+                    Happy clients
+                  </div>
+                </div>
+                <div className="h-10 w-px bg-nude-200" />
+                <div>
+                  <div className="font-display text-2xl text-ink-900">5.0★</div>
+                  <div className="text-[10px] uppercase tracking-[0.3em] text-ink-500">
+                    Avg rating
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+      </section>
+
+      {/* Featured services */}
+      <section className="section">
+        <div className="container-x">
+          <SectionHeading
+            eyebrow="Signature Treatments"
+            title="Luxury Brow & Beauty Services"
+            description="Crafted treatments designed around your features, skin and lifestyle."
+          />
+
+          {services.data.length === 0 ? (
+            <p className="mt-10 text-center text-sm text-ink-500">
+              Connect the Laravel API and seed the database to see services here.
+            </p>
+          ) : (
+            <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {services.data.map((service) => (
+                <ServiceCard key={service.id} service={service} />
+              ))}
+            </div>
+          )}
+
+          <div className="mt-12 text-center">
+            <Link href="/services" className="btn btn-secondary">
+              See all services
+              <span aria-hidden>→</span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Why choose us */}
+      <section className="section bg-gradient-to-b from-white to-cream-50">
+        <div className="container-x grid items-center gap-12 lg:grid-cols-[1fr_1.1fr]">
+          <SectionHeading
+            align="left"
+            eyebrow="Why Emcey Brows"
+            title="Quietly luxurious. Obsessively detailed."
+            description="Tiny details make every treatment exceptional — from custom shape mapping to premium pigments and a calming studio atmosphere."
+          />
+          <ul className="grid gap-4 sm:grid-cols-2">
+            {whyPoints.map((f) => (
+              <li
+                key={f.title}
+                className="group rounded-3xl border border-nude-100 bg-white/80 p-6 shadow-soft transition hover:-translate-y-1 hover:border-terracotta-400/40 hover:shadow-warm"
+              >
+                <div className="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-blush-100 to-nude-100 text-terracotta-500 transition group-hover:scale-110">
+                  <span className="text-lg" aria-hidden>{f.icon}</span>
+                </div>
+                <div className="mt-4 font-display text-xl text-ink-900">{f.title}</div>
+                <p className="mt-2 text-sm leading-relaxed text-ink-500">{f.body}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="section bg-white">
+        <div className="container-x">
+          <SectionHeading
+            eyebrow="Loved by our clients"
+            title="Five-star Google reviews"
+            description="Real words from real clients across Cavite."
+          />
+          <TestimonialSlider testimonials={testimonials.data.slice(0, 6)} />
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="section bg-gradient-to-b from-cream-50 to-white">
+        <div className="container-x grid gap-10 lg:grid-cols-[1fr_1.4fr]">
+          <SectionHeading
+            align="left"
+            eyebrow="Quick answers"
+            title="Frequently asked questions"
+          />
+          <FaqList faqs={faqs.data} />
+        </div>
+      </section>
+
+      {/* Map + CTA */}
+      <section className="section">
+        <div className="container-x grid gap-10 lg:grid-cols-2 lg:items-center">
+          <div>
+            <div className="eyebrow">Visit the studio</div>
+            <h2 className="mt-3 font-display text-4xl text-ink-900 sm:text-5xl">
+              Find us in {site.address.city}
+            </h2>
+            <p className="mt-4 max-w-md leading-relaxed text-ink-500">
+              {site.address.street}, {site.address.region},{" "}
+              {site.address.country}
+            </p>
+            <p className="mt-2 text-sm text-ink-500">{site.contact.bookingHours}</p>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Link href="/book" className="btn btn-primary">
+                Book Appointment
+              </Link>
+              <Link href="/contact" className="btn btn-secondary">
+                Contact us
+              </Link>
+              <a
+                href={site.socials.googleReview}
+                target="_blank"
+                rel="noreferrer"
+                className="btn btn-secondary"
+              >
+                Leave a review
+              </a>
+            </div>
+          </div>
+          <div className="overflow-hidden rounded-[2rem] border border-nude-100 shadow-warm">
+            <iframe
+              src={site.mapEmbed}
+              width="100%"
+              height="380"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Emcey Brows on Google Maps"
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+          </div>
         </div>
-      </main>
-    </div>
+      </section>
+    </>
   );
 }
