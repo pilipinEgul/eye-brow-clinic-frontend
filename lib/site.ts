@@ -30,7 +30,7 @@ export const site = {
   },
   mapEmbed:
     process.env.NEXT_PUBLIC_GOOGLE_MAPS_EMBED ||
-    "https://www.google.com/maps?q=Emcey+Brows+Aesthetics+-+Imus,+2nd+Floor+Brigitte+Optical+Center+Commercial+Building,+Block+2+Lot+14+Piazza+Bellissima,+Anabu-1D+Aguinaldo+Highway,+Imus,+Cavite,+Philippines+4102&output=embed",
+    "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d61875.0!2d120.93938!3d14.38844!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397d30071611fff:0xdaef502707019be4!2sEmcey+Brows+Aesthetics+-+Imus!5e0!3m2!1sen!2sph!4v0",
   geo: { lat: 14.3884412, lng: 120.9393859 },
   placeId: "ChIJ_x9hcQDTlzMR5JsBByxQ79o",
   areasServed: ["Imus", "Bacoor", "Dasmariñas", "General Trias", "Cavite"],
