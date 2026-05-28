@@ -3,15 +3,16 @@ export const site = {
   shortName: "Emcey Brows",
   tagline: "Luxury Brows & Aesthetic Services in Imus, Cavite",
   description:
-    "Emcey Brows Aesthetics is a luxury beauty studio in Imus, Cavite, specialising in microblading, ombre brows, lip blush, lashes and aesthetic facial treatments.",
+    "Emcey Brows Aesthetics is a luxury beauty studio in Imus, Cavite, specialising in ombre microshading, digital nano hair-stroke brows, lip tinting, Korean lashliner, hydra facials and laser treatments.",
   url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
   locale: "en_PH",
   address: {
-    street: "Imus, Cavite",
+    street:
+      "2nd Floor Brigitte Optical Center Commercial Building, Block 2 Lot 14 Piazza Bellissima, Anabu-1D Aguinaldo Highway",
     city: "Imus",
     region: "Cavite",
     country: "Philippines",
-    postalCode: "4103",
+    postalCode: "4102",
   },
   contact: {
     phone: process.env.NEXT_PUBLIC_PHONE_NUMBER || "+63 999 000 0000",
@@ -29,7 +30,7 @@ export const site = {
   },
   mapEmbed:
     process.env.NEXT_PUBLIC_GOOGLE_MAPS_EMBED ||
-    "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d61875.0!2d120.93938!3d14.38844!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397d30071611fff:0xdaef502707019be4!2sEmcey+Brows+Aesthetics+-+Imus!5e0!3m2!1sen!2sph!4v0",
+    "https://www.google.com/maps?q=Emcey+Brows+Aesthetics+-+Imus,+2nd+Floor+Brigitte+Optical+Center+Commercial+Building,+Block+2+Lot+14+Piazza+Bellissima,+Anabu-1D+Aguinaldo+Highway,+Imus,+Cavite,+Philippines+4102&output=embed",
   geo: { lat: 14.3884412, lng: 120.9393859 },
   placeId: "ChIJ_x9hcQDTlzMR5JsBByxQ79o",
   areasServed: ["Imus", "Bacoor", "Dasmariñas", "General Trias", "Cavite"],

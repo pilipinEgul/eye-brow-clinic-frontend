@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { api } from "@/lib/api";
+import { staticServices, staticFaqs, filterFeatured } from "@/lib/static-content";
 import { ServiceCard } from "@/components/ServiceCard";
 import { TestimonialSlider } from "@/components/TestimonialSlider";
 import { SectionHeading } from "@/components/SectionHeading";
@@ -19,7 +20,7 @@ const whyPoints = [
   {
     icon: "✎",
     title: "Certified artistry",
-    body: "Trained in microblading, PMU and aesthetic facials.",
+    body: "Trained in semi-permanent makeup, laser and aesthetic facials.",
   },
   {
     icon: "✦",
@@ -39,11 +40,9 @@ const whyPoints = [
 ];
 
 export default async function Home() {
-  const [services, testimonials, faqs] = await Promise.all([
-    api.services({ featured: true, per_page: 6 }),
-    api.testimonials({ featured: true, per_page: 6 }),
-    api.faqs({ general: true }),
-  ]);
+  const testimonials = await api.testimonials({ featured: true, per_page: 6 });
+  const services = { data: filterFeatured(staticServices).slice(0, 6) };
+  const faqs = { data: staticFaqs.filter((f) => f.service_id === null) };
 
   return (
     <>
@@ -79,9 +78,9 @@ export default async function Home() {
               <span className="text-ink-700">brows that feel like you.</span>
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-ink-500">
-              From hyper-realistic microblading to glow-restoring facials —
-              Emcey Brows blends artistry, premium pigments and a calming
-              studio experience.
+              From digital nano hair-stroke brows to glow-restoring hydra
+              facials — Emcey Brows blends artistry, premium pigments and a
+              calming studio experience.
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3">
@@ -111,8 +110,8 @@ export default async function Home() {
             <div className="grid grid-cols-2 gap-3 sm:gap-4">
               <div className="relative aspect-[3/4] overflow-hidden rounded-[2rem] bg-gradient-to-br from-blush-200 via-blush-300 to-terracotta-400 shadow-warm">
                 <Image
-                  src="/images/hero/signature.jpg"
-                  alt="Emcey Brows signature treatment — Imus, Cavite"
+                  src="/images/hero/signature-2.jpg"
+                  alt="Microblading before and after by Emcey Brows — Imus, Cavite client"
                   fill
                   priority
                   sizes="(max-width: 1024px) 50vw, 400px"
@@ -132,8 +131,8 @@ export default async function Home() {
                 </div>
                 <div className="relative aspect-square overflow-hidden rounded-[2rem] bg-gradient-to-br from-blush-100 to-blush-200 shadow-soft">
                   <Image
-                    src="/images/hero/tile-2.jpg"
-                    alt="Brow treatment by Emcey Brows — Imus, Cavite"
+                    src="/images/hero/tile-healed.jpg"
+                    alt="Ombre brows healed result — Emcey Brows, Imus Cavite"
                     fill
                     sizes="(max-width: 1024px) 25vw, 200px"
                     className="object-cover"
@@ -231,6 +230,87 @@ export default async function Home() {
         </div>
       </section>
 
+      {/* Real client transformation */}
+      <section className="section bg-white">
+        <div className="container-x grid items-center gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
+          <div className="relative">
+            <div className="relative aspect-square overflow-hidden rounded-[2.5rem] shadow-warm">
+              <Image
+                src="/images/hero/transformation.jpg"
+                alt="Microblading before and after by Emcey Brows — Imus, Cavite client"
+                fill
+                sizes="(max-width: 1024px) 100vw, 560px"
+                className="object-cover"
+              />
+            </div>
+            <span
+              aria-hidden
+              className="pointer-events-none absolute -bottom-6 -left-6 -z-10 h-40 w-40 rounded-full bg-blush-200/60 blur-2xl"
+            />
+            <span
+              aria-hidden
+              className="pointer-events-none absolute -top-6 -right-6 -z-10 h-40 w-40 rounded-full bg-nude-200/60 blur-2xl"
+            />
+          </div>
+          <div>
+            <div className="eyebrow">Real results</div>
+            <h2 className="mt-3 font-display text-4xl text-ink-900 sm:text-5xl">
+              A natural shape, made for your face.
+            </h2>
+            <p className="mt-4 max-w-md leading-relaxed text-ink-500">
+              Every brow is mapped to your features — never copied, never
+              forced. The result: defined, balanced brows that look like they
+              grew that way.
+            </p>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Link href="/gallery" className="btn btn-secondary">
+                See more transformations
+                <span aria-hidden>→</span>
+              </Link>
+              <Link href="/book" className="btn btn-primary">
+                Book your shape mapping
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Watch the craft */}
+      <section className="section bg-gradient-to-b from-white to-cream-50">
+        <div className="container-x grid items-center gap-12 lg:grid-cols-[1.2fr_1fr] lg:gap-16">
+          <div className="relative overflow-hidden rounded-[2.5rem] shadow-warm">
+            <video
+              src="/images/hero/studio-loop-2.mp4"
+              className="block aspect-video h-full w-full object-cover sm:aspect-[4/3]"
+              autoPlay
+              muted
+              loop
+              playsInline
+              aria-label="Brow treatment in progress at Emcey Brows Aesthetics"
+            />
+          </div>
+          <div>
+            <div className="eyebrow">Watch the craft</div>
+            <h2 className="mt-3 font-display text-4xl text-ink-900 sm:text-5xl">
+              Quiet focus. Precise hands.
+            </h2>
+            <p className="mt-4 max-w-md leading-relaxed text-ink-500">
+              Every session is a calm, deliberate ritual — from shape mapping
+              to the final pigment stroke. Press play and see how we work.
+            </p>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Link href="/about" className="btn btn-secondary">
+                Meet the studio
+                <span aria-hidden>→</span>
+              </Link>
+              <Link href="/book" className="btn btn-primary">
+                Book a session
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Testimonials */}
       <section className="section bg-white">
         <div className="container-x">
@@ -264,8 +344,9 @@ export default async function Home() {
               Find us in {site.address.city}
             </h2>
             <p className="mt-4 max-w-md leading-relaxed text-ink-500">
-              {site.address.street}, {site.address.region},{" "}
-              {site.address.country}
+              {site.address.street}
+              <br />
+              {site.address.city}, {site.address.region} {site.address.postalCode}, {site.address.country}
             </p>
             <p className="mt-2 text-sm text-ink-500">{site.contact.bookingHours}</p>
             <div className="mt-7 flex flex-wrap gap-3">

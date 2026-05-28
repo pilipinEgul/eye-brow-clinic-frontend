@@ -27,7 +27,11 @@ export default function ContactPage() {
             <div>
               <dt className="eyebrow">Address</dt>
               <dd className="mt-1 text-ink-700">
-                {site.address.street}, {site.address.region}
+                {site.address.street}
+                <br />
+                {site.address.city}, {site.address.region} {site.address.postalCode}
+                <br />
+                {site.address.country}
               </dd>
             </div>
             <div>

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { Service } from "@/lib/api";
 
@@ -20,7 +21,17 @@ export function ServiceCard({ service }: { service: Service }) {
       className="card card-hover group relative flex flex-col overflow-hidden"
     >
       <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-blush-100 via-nude-100 to-blush-200">
-        <div className="absolute inset-0 shimmer" />
+        {service.cover_image ? (
+          <Image
+            src={service.cover_image}
+            alt={`${service.name} by Emcey Brows — Imus, Cavite`}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        ) : (
+          <div className="absolute inset-0 shimmer" />
+        )}
         <div
           aria-hidden
           className="absolute -bottom-10 -right-10 h-40 w-40 rounded-full bg-terracotta-300/30 blur-2xl"

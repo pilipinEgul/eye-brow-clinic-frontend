@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import { api } from "@/lib/api";
+import Image from "next/image";
+import { staticGallery } from "@/lib/static-content";
 import { SectionHeading } from "@/components/SectionHeading";
-
-export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: "Gallery — Brows, Lips & Lashes Transformations",
@@ -10,8 +9,8 @@ export const metadata: Metadata = {
     "Real before-and-after transformations from clients of Emcey Brows Aesthetics in Imus, Cavite.",
 };
 
-export default async function GalleryPage() {
-  const { data: images } = await api.gallery({ per_page: 36 });
+export default function GalleryPage() {
+  const images = staticGallery;
 
   const categories = Array.from(
     new Set(images.map((i) => i.category).filter((c): c is string => Boolean(c))),
@@ -39,32 +38,32 @@ export default async function GalleryPage() {
           </div>
         ) : null}
 
-        {images.length === 0 ? (
-          <p className="mt-12 text-center text-sm text-ink-500">
-            Gallery images will appear here once the API is connected and seeded.
-          </p>
-        ) : (
-          <div className="mt-12 columns-1 gap-4 sm:columns-2 lg:columns-3 xl:columns-4">
-            {images.map((img) => (
-              <figure
-                key={img.id}
-                className="mb-4 break-inside-avoid overflow-hidden rounded-3xl border border-nude-100 bg-white shadow-sm"
-              >
-                <div className="relative aspect-[4/5] bg-gradient-to-br from-blush-100 via-nude-100 to-blush-200">
-                  <div className="absolute inset-0 shimmer" />
+        <div className="mt-12 columns-1 gap-4 sm:columns-2 lg:columns-3 xl:columns-4">
+          {images.map((img) => (
+            <figure
+              key={img.id}
+              className="mb-4 break-inside-avoid overflow-hidden rounded-3xl border border-nude-100 bg-white shadow-sm"
+            >
+              <div className="relative aspect-[4/5] bg-nude-100">
+                <Image
+                  src={img.image_path}
+                  alt={img.alt_text ?? img.title ?? "Emcey Brows transformation"}
+                  fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  className="object-cover"
+                />
+              </div>
+              <figcaption className="p-4">
+                <div className="text-[10px] uppercase tracking-[0.3em] text-gold-600">
+                  {img.category}
                 </div>
-                <figcaption className="p-4">
-                  <div className="text-[10px] uppercase tracking-[0.3em] text-gold-600">
-                    {img.category}
-                  </div>
-                  <div className="mt-1 font-display text-lg text-ink-900">
-                    {img.title ?? img.service?.name ?? "Studio work"}
-                  </div>
-                </figcaption>
-              </figure>
-            ))}
-          </div>
-        )}
+                <div className="mt-1 font-display text-lg text-ink-900">
+                  {img.title ?? img.service?.name ?? "Studio work"}
+                </div>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
       </div>
     </section>
   );

@@ -65,8 +65,9 @@ export function Footer() {
           <ul className="mt-4 space-y-2.5 text-sm text-ink-700">
             <li>{site.address.street}</li>
             <li>
-              {site.address.region}, {site.address.country}
+              {site.address.city}, {site.address.region} {site.address.postalCode}
             </li>
+            <li>{site.address.country}</li>
             <li>
               <a
                 href={`tel:${site.contact.phone}`}

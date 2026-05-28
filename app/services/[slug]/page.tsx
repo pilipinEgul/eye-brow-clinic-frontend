@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { api } from "@/lib/api";
+import { staticFaqs, staticServices } from "@/lib/static-content";
 import { SectionHeading } from "@/components/SectionHeading";
 import { FaqList } from "@/components/FaqList";
 import { TestimonialCard } from "@/components/TestimonialCard";
@@ -13,9 +15,13 @@ export const revalidate = 300;
 
 type PageProps = { params: Promise<{ slug: string }> };
 
+export function generateStaticParams() {
+  return staticServices.map((s) => ({ slug: s.slug }));
+}
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const { data: service } = await api.service(slug);
+  const service = staticServices.find((s) => s.slug === slug);
   if (!service) return { title: "Service not found" };
 
   const title = service.meta.title ?? `${service.name} — Emcey Brows`;
@@ -45,8 +51,14 @@ function peso(value: string | null) {
 
 export default async function ServiceDetailPage({ params }: PageProps) {
   const { slug } = await params;
-  const { data: service } = await api.service(slug);
+  const service = staticServices.find((s) => s.slug === slug);
   if (!service) notFound();
+
+  const serviceFaqs = staticFaqs.filter((f) => f.service_id === service.id);
+  const allTestimonials = await api.testimonials({ per_page: 40 });
+  const serviceTestimonials = allTestimonials.data.filter(
+    (t) => t.service?.slug === service.slug,
+  );
 
   const price = peso(service.promo_price ?? service.price);
   const originalPrice = service.promo_price ? peso(service.price) : null;
@@ -64,8 +76,8 @@ export default async function ServiceDetailPage({ params }: PageProps) {
         slug: service.slug,
         price: service.promo_price ?? service.price,
       })} />
-      {service.faqs && service.faqs.length > 0 ? (
-        <JsonLd data={faqSchema(service.faqs.map((f) => ({ question: f.question, answer: f.answer })))} />
+      {serviceFaqs.length > 0 ? (
+        <JsonLd data={faqSchema(serviceFaqs.map((f) => ({ question: f.question, answer: f.answer })))} />
       ) : null}
 
       <section className="section">
@@ -119,9 +131,29 @@ export default async function ServiceDetailPage({ params }: PageProps) {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div className="aspect-square rounded-3xl bg-gradient-to-br from-blush-200 to-blush-300 shimmer" />
-            <div className="aspect-square rounded-3xl bg-gradient-to-br from-nude-200 to-nude-300 shimmer mt-12" />
+          <div className="relative">
+            <div className="relative aspect-[4/5] overflow-hidden rounded-[2.5rem] shadow-warm">
+              {service.cover_image ? (
+                <Image
+                  src={service.cover_image}
+                  alt={`${service.name} by Emcey Brows — Imus, Cavite`}
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 480px"
+                  className="object-cover"
+                />
+              ) : (
+                <div className="absolute inset-0 bg-gradient-to-br from-blush-200 to-nude-300" />
+              )}
+            </div>
+            <span
+              aria-hidden
+              className="pointer-events-none absolute -bottom-6 -left-6 -z-10 h-40 w-40 rounded-full bg-blush-200/60 blur-2xl"
+            />
+            <span
+              aria-hidden
+              className="pointer-events-none absolute -top-6 -right-6 -z-10 h-40 w-40 rounded-full bg-nude-200/60 blur-2xl"
+            />
           </div>
         </div>
       </section>
@@ -185,23 +217,23 @@ export default async function ServiceDetailPage({ params }: PageProps) {
         </section>
       ) : null}
 
-      {service.faqs && service.faqs.length > 0 ? (
+      {serviceFaqs.length > 0 ? (
         <section className="section bg-white">
           <div className="container-x">
             <SectionHeading eyebrow={`About ${service.name}`} title="Frequently asked" />
             <div className="mt-10">
-              <FaqList faqs={service.faqs} />
+              <FaqList faqs={serviceFaqs} />
             </div>
           </div>
         </section>
       ) : null}
 
-      {service.testimonials && service.testimonials.length > 0 ? (
+      {serviceTestimonials.length > 0 ? (
         <section className="section">
           <div className="container-x">
             <SectionHeading eyebrow="Real client stories" title="What clients say" />
             <div className="mt-12 grid gap-6 md:grid-cols-3">
-              {service.testimonials.slice(0, 6).map((t) => (
+              {serviceTestimonials.slice(0, 6).map((t) => (
                 <TestimonialCard key={t.id} testimonial={t} />
               ))}
             </div>
