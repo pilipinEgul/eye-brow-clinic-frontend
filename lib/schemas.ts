@@ -7,7 +7,7 @@ export function localBusinessSchema() {
     name: site.name,
     description: site.description,
     url: site.url,
-    telephone: site.contact.phone,
+    telephone: [site.contact.landlineTel, site.contact.phoneTel],
     image: `${site.url}/og-image.jpg`,
     priceRange: "₱₱",
     address: {

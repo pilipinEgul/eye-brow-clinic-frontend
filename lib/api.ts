@@ -30,6 +30,10 @@ export type Service = {
   description: string | null;
   price: string | null;
   promo_price: string | null;
+  sr_artist_first_session: string | null;
+  master_artist_first_session: string | null;
+  sr_artist_second_session: string | null;
+  master_artist_second_session: string | null;
   duration_minutes: number | null;
   cover_image: string | null;
   gallery: string[] | null;

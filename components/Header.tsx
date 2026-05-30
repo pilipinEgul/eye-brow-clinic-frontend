@@ -138,9 +138,13 @@ export function Header() {
             >
               Book Appointment
             </Link>
-            <div className="mt-4 flex items-center justify-center gap-4 border-t border-nude-100 pt-4 text-xs text-ink-500">
-              <a href={`tel:${site.contact.phone}`} className="hover:text-terracotta-500">
-                {site.contact.phone}
+            <div className="mt-4 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 border-t border-nude-100 pt-4 text-xs text-ink-500">
+              <a href={`tel:${site.contact.landlineTel}`} className="hover:text-terracotta-500">
+                ☎ {site.contact.landline}
+              </a>
+              <span aria-hidden>·</span>
+              <a href={`tel:${site.contact.phoneTel}`} className="hover:text-terracotta-500">
+                📱 {site.contact.phone}
               </a>
               <span aria-hidden>·</span>
               <span>{site.contact.bookingHours}</span>

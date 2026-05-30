@@ -91,7 +91,7 @@ export function FloatingCTA() {
       <div className="fixed inset-x-3 bottom-3 z-30 md:hidden">
         <div className="glass flex items-center gap-2 rounded-full p-1.5 shadow-warm">
           <a
-            href={`tel:${site.contact.phone}`}
+            href={`tel:${site.contact.phoneTel}`}
             className="flex flex-1 items-center justify-center gap-1.5 rounded-full bg-white px-3 py-2.5 text-xs font-medium text-ink-900 ring-1 ring-nude-100 transition active:scale-95"
             aria-label="Call us"
           >

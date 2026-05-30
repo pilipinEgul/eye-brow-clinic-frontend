@@ -3,6 +3,8 @@ import Image from "next/image";
 import { api } from "@/lib/api";
 import { TestimonialCard } from "@/components/TestimonialCard";
 import { SectionHeading } from "@/components/SectionHeading";
+import { ReviewLinks } from "@/components/ReviewLinks";
+import { GoogleReviews } from "@/components/GoogleReviews";
 
 export const revalidate = 300;
 
@@ -61,6 +63,10 @@ export default async function TestimonialsPage() {
               ))}
             </div>
           )}
+
+          <GoogleReviews className="mt-16" />
+
+          <ReviewLinks className="mt-16" />
         </div>
       </section>
     </>

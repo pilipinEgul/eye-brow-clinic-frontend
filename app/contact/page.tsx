@@ -36,9 +36,12 @@ export default function ContactPage() {
             </div>
             <div>
               <dt className="eyebrow">Phone</dt>
-              <dd className="mt-1">
-                <a className="text-ink-700 hover:text-gold-600" href={`tel:${site.contact.phone}`}>
-                  {site.contact.phone}
+              <dd className="mt-1 space-y-1">
+                <a className="block text-ink-700 hover:text-gold-600" href={`tel:${site.contact.landlineTel}`}>
+                  ☎ {site.contact.landline}
+                </a>
+                <a className="block text-ink-700 hover:text-gold-600" href={`tel:${site.contact.phoneTel}`}>
+                  📱 {site.contact.phone}
                 </a>
               </dd>
             </div>

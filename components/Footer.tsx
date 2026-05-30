@@ -70,10 +70,18 @@ export function Footer() {
             <li>{site.address.country}</li>
             <li>
               <a
-                href={`tel:${site.contact.phone}`}
+                href={`tel:${site.contact.landlineTel}`}
                 className="hover:text-terracotta-500"
               >
-                {site.contact.phone}
+                ☎ {site.contact.landline}
+              </a>
+            </li>
+            <li>
+              <a
+                href={`tel:${site.contact.phoneTel}`}
+                className="hover:text-terracotta-500"
+              >
+                📱 {site.contact.phone}
               </a>
             </li>
             <li>

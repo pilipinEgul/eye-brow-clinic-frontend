@@ -62,6 +62,12 @@ export default async function ServiceDetailPage({ params }: PageProps) {
 
   const price = peso(service.promo_price ?? service.price);
   const originalPrice = service.promo_price ? peso(service.price) : null;
+  const hasTierPricing = Boolean(
+    service.sr_artist_first_session ||
+      service.master_artist_first_session ||
+      service.sr_artist_second_session ||
+      service.master_artist_second_session,
+  );
 
   return (
     <>
@@ -163,6 +169,70 @@ export default async function ServiceDetailPage({ params }: PageProps) {
           <div className="container-x grid gap-10 lg:grid-cols-[1fr_2fr]">
             <SectionHeading align="left" eyebrow="The treatment" title="What to expect" />
             <p className="text-base leading-relaxed text-ink-700">{service.description}</p>
+          </div>
+        </section>
+      ) : null}
+
+      {hasTierPricing ? (
+        <section className="section bg-gradient-to-b from-white to-cream-50">
+          <div className="container-x">
+            <SectionHeading
+              eyebrow="Session pricing"
+              title="Sr Artist & Master Artist rates"
+              description={
+                originalPrice
+                  ? `Original price ${originalPrice} — current promo pricing below.`
+                  : "Two-session protocol — choose Sr Artist or Master Artist tier."
+              }
+            />
+            <div className="mt-12 grid gap-6 md:grid-cols-2">
+              <div className="rounded-3xl border border-nude-100 bg-white p-8 shadow-soft">
+                <div className="eyebrow text-terracotta-500">1st Session</div>
+                <dl className="mt-6 space-y-5">
+                  {service.sr_artist_first_session ? (
+                    <div className="flex items-baseline justify-between gap-4 border-b border-nude-100 pb-4">
+                      <dt className="text-sm text-ink-500">Sr Artist Rate</dt>
+                      <dd className="font-display text-3xl text-ink-900">
+                        {peso(service.sr_artist_first_session)}
+                      </dd>
+                    </div>
+                  ) : null}
+                  {service.master_artist_first_session ? (
+                    <div className="flex items-baseline justify-between gap-4">
+                      <dt className="text-sm text-ink-500">Master Artist Rate</dt>
+                      <dd className="font-display text-3xl text-ink-900">
+                        {peso(service.master_artist_first_session)}
+                      </dd>
+                    </div>
+                  ) : null}
+                </dl>
+              </div>
+
+              <div className="rounded-3xl border border-nude-100 bg-white p-8 shadow-soft">
+                <div className="eyebrow text-terracotta-500">2nd Session</div>
+                <dl className="mt-6 space-y-5">
+                  {service.sr_artist_second_session ? (
+                    <div className="flex items-baseline justify-between gap-4 border-b border-nude-100 pb-4">
+                      <dt className="text-sm text-ink-500">Sr Artist Rate</dt>
+                      <dd className="font-display text-3xl text-ink-900">
+                        {peso(service.sr_artist_second_session)}
+                      </dd>
+                    </div>
+                  ) : null}
+                  {service.master_artist_second_session ? (
+                    <div className="flex items-baseline justify-between gap-4">
+                      <dt className="text-sm text-ink-500">Master Artist Rate</dt>
+                      <dd className="font-display text-3xl text-ink-900">
+                        {peso(service.master_artist_second_session)}
+                      </dd>
+                    </div>
+                  ) : null}
+                </dl>
+              </div>
+            </div>
+            <p className="mt-6 text-center text-xs uppercase tracking-[0.3em] text-ink-500">
+              Master Artist tier adds ₱1,500 (1st) / ₱1,000 (2nd) over Sr Artist
+            </p>
           </div>
         </section>
       ) : null}

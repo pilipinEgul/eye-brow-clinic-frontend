@@ -35,7 +35,7 @@ const whyPoints = [
   {
     icon: "₱",
     title: "Honest pricing",
-    body: "Transparent rates, GCash & Maya friendly.",
+    body: "Transparent rates, GCash, Maya, Visa, Mastercard, & QRPh friendly.",
   },
 ];
 

@@ -60,6 +60,14 @@ export const metadata: Metadata = {
   },
   alternates: { canonical: site.url },
   robots: { index: true, follow: true },
+  // Paste the token from Google Search Console / Bing Webmaster Tools into .env
+  // (GOOGLE_SITE_VERIFICATION / BING_SITE_VERIFICATION) to verify ownership.
+  verification: {
+    google: process.env.GOOGLE_SITE_VERIFICATION || undefined,
+    other: process.env.BING_SITE_VERIFICATION
+      ? { "msvalidate.01": process.env.BING_SITE_VERIFICATION }
+      : undefined,
+  },
 };
 
 export default function RootLayout({
