@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { staticServices } from "@/lib/static-content";
+import { areas } from "@/lib/areas";
 import { site } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -13,6 +14,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/testimonials",
     "/contact",
     "/book",
+    "/areas",
   ].map((path) => ({
     url: `${base}${path}`,
     lastModified: new Date(),
@@ -27,5 +29,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  return [...staticRoutes, ...serviceEntries];
+  const areaEntries: MetadataRoute.Sitemap = areas.map((a) => ({
+    url: `${base}/areas/${a.slug}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly",
+    priority: 0.8,
+  }));
+
+  return [...staticRoutes, ...serviceEntries, ...areaEntries];
 }

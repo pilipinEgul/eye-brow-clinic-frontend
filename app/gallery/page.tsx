@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { staticGallery } from "@/lib/static-content";
+import { getFacebookPhotos } from "@/lib/facebook-photos";
 import { SectionHeading } from "@/components/SectionHeading";
 
 export const metadata: Metadata = {
@@ -9,8 +10,11 @@ export const metadata: Metadata = {
     "Real before-and-after transformations from clients of Emcey Brows Aesthetics in Imus, Cavite.",
 };
 
-export default function GalleryPage() {
-  const images = staticGallery;
+export default async function GalleryPage() {
+  // Live Facebook Page photos (empty unless FACEBOOK_PAGE_ACCESS_TOKEN is set),
+  // shown alongside the built-in studio photos.
+  const facebookPhotos = await getFacebookPhotos();
+  const images = [...staticGallery, ...facebookPhotos];
 
   const categories = Array.from(
     new Set(images.map((i) => i.category).filter((c): c is string => Boolean(c))),

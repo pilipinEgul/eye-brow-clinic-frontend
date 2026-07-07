@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { nav, site } from "@/lib/site";
+import { areas } from "@/lib/areas";
 
 export function Footer() {
   return (
@@ -104,6 +105,29 @@ export function Footer() {
               </a>
             </li>
           </ul>
+        </div>
+      </div>
+
+      <div className="relative border-t border-nude-100 py-6">
+        <div className="container-x">
+          <div className="eyebrow">Areas we serve</div>
+          <div className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-sm">
+            <Link
+              href="/areas"
+              className="font-medium text-ink-700 transition-colors hover:text-terracotta-500"
+            >
+              All of Cavite
+            </Link>
+            {areas.map((a) => (
+              <Link
+                key={a.slug}
+                href={`/areas/${a.slug}`}
+                className="text-ink-500 transition-colors hover:text-terracotta-500"
+              >
+                {a.name}
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
 

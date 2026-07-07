@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Emcey Brows — Google & Facebook Reviews Setup Guide</title>
+<style>
+  :root {
+    --ink: #2b2521;
+    --ink-soft: #6b5f57;
+    --terracotta: #c0674b;
+    --terracotta-dark: #9c4f38;
+    --gold: #b8902f;
+    --blush: #f6e7e2;
+    --nude: #efe6df;
+    --line: #e6dcd4;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body {
+    font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    color: var(--ink);
+    margin: 0;
+    line-height: 1.55;
+    font-size: 12.5px;
+  }
+  .page { padding: 0 48px; }
+
+  /* Cover */
+  .cover {
+    background: linear-gradient(135deg, var(--terracotta), var(--terracotta-dark));
+    color: #fff;
+    padding: 70px 48px 60px;
+    page-break-after: always;
+  }
+  .cover .eyebrow {
+    text-transform: uppercase; letter-spacing: 3px; font-size: 12px;
+    opacity: .85; margin-bottom: 18px;
+  }
+  .cover h1 { font-size: 38px; line-height: 1.15; margin: 0 0 14px; font-weight: 700; }
+  .cover p { font-size: 15px; max-width: 540px; opacity: .95; margin: 0 0 26px; }
+  .cover .meta {
+    margin-top: 40px; font-size: 12px; opacity: .9;
+    border-top: 1px solid rgba(255,255,255,.35); padding-top: 16px;
+  }
+  .badges { margin-top: 28px; display: flex; gap: 10px; flex-wrap: wrap; }
+  .badge {
+    background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.4);
+    border-radius: 999px; padding: 7px 14px; font-size: 12px; font-weight: 600;
+  }
+
+  h2 {
+    font-size: 21px; color: var(--terracotta-dark); margin: 34px 0 6px;
+    padding-top: 14px; border-top: 2px solid var(--line);
+  }
+  h2 .num {
+    display: inline-grid; place-items: center; width: 26px; height: 26px;
+    background: var(--terracotta); color: #fff; border-radius: 50%;
+    font-size: 13px; margin-right: 10px; vertical-align: middle;
+  }
+  h3 { font-size: 15px; margin: 20px 0 6px; color: var(--ink); }
+  p { margin: 8px 0; }
+  a { color: var(--terracotta-dark); word-break: break-all; }
+
+  ol, ul { margin: 8px 0 8px 0; padding-left: 22px; }
+  li { margin: 6px 0; }
+  ol.steps { counter-reset: step; list-style: none; padding-left: 0; }
+  ol.steps > li {
+    counter-increment: step; position: relative; padding-left: 40px; margin: 12px 0;
+  }
+  ol.steps > li::before {
+    content: counter(step); position: absolute; left: 0; top: -1px;
+    width: 26px; height: 26px; background: var(--blush); color: var(--terracotta-dark);
+    border-radius: 50%; display: grid; place-items: center; font-weight: 700; font-size: 13px;
+  }
+
+  code {
+    background: var(--nude); padding: 2px 6px; border-radius: 5px;
+    font-family: "Consolas", "Courier New", monospace; font-size: 11.5px;
+  }
+  pre {
+    background: #2b2521; color: #f3ece6; padding: 14px 16px; border-radius: 10px;
+    overflow-x: auto; font-family: "Consolas","Courier New",monospace; font-size: 11px;
+    line-height: 1.5;
+  }
+  pre code { background: none; color: inherit; padding: 0; }
+
+  .callout {
+    border-left: 4px solid var(--gold); background: #fbf6ee;
+    padding: 12px 16px; border-radius: 0 10px 10px 0; margin: 14px 0;
+  }
+  .callout.warn { border-color: var(--terracotta); background: #fbeee9; }
+  .callout.ok { border-color: #4f9d69; background: #eef7f0; }
+  .callout strong { display: block; margin-bottom: 3px; }
+
+  table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 11.5px; }
+  th, td { text-align: left; padding: 9px 11px; border: 1px solid var(--line); vertical-align: top; }
+  th { background: var(--blush); color: var(--terracotta-dark); }
+
+  .section { page-break-inside: avoid; }
+  .footer {
+    margin-top: 40px; padding: 16px 0; border-top: 2px solid var(--line);
+    font-size: 11px; color: var(--ink-soft); text-align: center;
+  }
+  @page { margin: 16mm 0; size: A4; }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="eyebrow">Emcey Brows Aesthetics · Website Guide</div>
+  <h1>Setting Up Google&nbsp;&amp; Facebook Reviews</h1>
+  <p>A step-by-step, non-technical walkthrough for connecting your client
+  reviews to the website — including the fully automatic Google reviews feed.</p>
+  <div class="badges">
+    <span class="badge">★ Google Maps</span>
+    <span class="badge">Facebook Recommendations</span>
+    <span class="badge">Auto-updating reviews</span>
+  </div>
+  <div class="meta">
+    Prepared for the Emcey Brows website · Imus, Cavite<br/>
+    Covers: link-out buttons · live Google auto-pull · why Facebook is link-only
+  </div>
+</div>
+
+<div class="page">
+
+  <div class="section">
+    <h2><span class="num">i</span>What you get</h2>
+    <p>Your website connects to reviews in three ways. Layers 1 and 3 are already
+    built into the site — Layer 3 simply needs one key to switch on.</p>
+    <table>
+      <tr><th>Layer</th><th>What it does</th><th>Status</th><th>Cost</th></tr>
+      <tr><td><strong>1. Link-out buttons</strong></td><td>Buttons that open your Google &amp; Facebook review pages</td><td>✅ Live</td><td>Free</td></tr>
+      <tr><td><strong>2. Manual testimonials</strong></td><td>Hand-picked quotes you add in the admin</td><td>✅ Available</td><td>Free</td></tr>
+      <tr><td><strong>3. Live Google auto-pull</strong></td><td>Real Google reviews shown &amp; refreshed automatically</td><td>✅ Built — add key</td><td>Google billing (tiny)</td></tr>
+    </table>
+    <div class="callout ok">
+      <strong>The one thing you must do</strong>
+      To turn on automatic Google reviews, create a Google API key and paste it
+      into the site's settings — that's it. Steps are in Section 2.
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><span class="num">1</span>Google reviews — the quick link-out (already done)</h2>
+    <p>On the <strong>Testimonials</strong> page there are buttons that send
+    visitors straight to your Google listing:</p>
+    <ul>
+      <li><strong>★ Read Google reviews</strong> — opens your Google Maps listing</li>
+      <li><strong>Write a Google review</strong> — opens Google's review box</li>
+    </ul>
+    <p>These already point at the Emcey Brows listing — nothing to do. If your
+    business listing ever changes, update the Place ID in the site settings
+    (file <code>lib/site.ts</code>, value <code>placeId</code>).</p>
+
+    <h3>How to find your Google Place ID (only if it changes)</h3>
+    <ol class="steps">
+      <li>Go to Google's Place ID finder:
+        <a href="https://developers.google.com/maps/documentation/places/web-service/place-id">developers.google.com/maps/.../place-id</a></li>
+      <li>Search <strong>“Emcey Brows Aesthetics – Imus”</strong> on the map.</li>
+      <li>Copy the <strong>Place ID</strong> shown in the bubble
+        (looks like <code>ChIJ_x9hcQDTlzMR5JsBByxQ79o</code>).</li>
+    </ol>
+  </div>
+
+  <div class="section">
+    <h2><span class="num">2</span>Turn ON automatic Google reviews</h2>
+    <p>This makes real Google reviews appear on the site and refresh themselves.
+    It is already coded — it only needs a Google API key. Until a key is added,
+    the page safely shows the link-out buttons instead.</p>
+
+    <h3>Step A — Create the Google key (one time, ~10 min)</h3>
+    <ol class="steps">
+      <li>Open the <strong>Google Cloud Console</strong>:
+        <a href="https://console.cloud.google.com/">console.cloud.google.com</a>
+        and sign in with the clinic's Google account.</li>
+      <li>Create a project (top bar → <em>New Project</em> → name it
+        “Emcey Brows Website”).</li>
+      <li>In the search bar type <strong>“Places API (New)”</strong>, open it,
+        and click <strong>Enable</strong>.</li>
+      <li>Enable <strong>Billing</strong> on the project (a card is required even
+        though normal website use stays within the free monthly allowance).</li>
+      <li>Go to <strong>APIs &amp; Services → Credentials → Create credentials →
+        API key</strong>. Copy the key (starts with <code>AIza…</code>).</li>
+      <li>Click <strong>Edit</strong> on the key → <strong>API restrictions</strong>
+        → restrict it to <strong>Places API (New)</strong> → Save.</li>
+    </ol>
+
+    <h3>Step B — Add the key to the website</h3>
+    <p>Open the site's <code>.env</code> file (or your hosting provider's
+    Environment Variables settings) and add this line:</p>
+    <pre><code>GOOGLE_PLACES_API_KEY=AIza...your-key-here...</code></pre>
+    <div class="callout warn">
+      <strong>Keep this key private</strong>
+      It has <em>no</em> <code>NEXT_PUBLIC_</code> prefix on purpose — that keeps
+      it on the server only, so visitors never see it. Don't paste it into
+      public files or chat.
+    </div>
+    <p>Then <strong>restart / redeploy</strong> the site. Live Google reviews
+    now appear automatically on the Testimonials page.</p>
+
+    <h3>To turn it OFF</h3>
+    <p>Delete or blank the <code>GOOGLE_PLACES_API_KEY</code> line and redeploy.
+    The page falls back to the link-out buttons. No code change needed.</p>
+
+    <h3>Good to know</h3>
+    <ul>
+      <li>Google returns <strong>up to 5 reviews</strong> and chooses which five —
+        you can't display all of them or pick favourites. To feature a specific
+        review, add it as a manual testimonial (Section 4).</li>
+      <li>Reviews are shown unmodified with the Google logo and reviewer name —
+        this is required by Google and already handled.</li>
+      <li>The site caches reviews for <strong>24 hours</strong> to stay within
+        Google's free usage and refresh rules.</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2><span class="num">3</span>Facebook reviews</h2>
+    <p>Facebook calls reviews <strong>“Recommendations.”</strong> The website
+    already has buttons that open them:</p>
+    <ul>
+      <li><strong>Read Facebook reviews</strong> — opens your Page's Reviews tab</li>
+      <li><strong>Recommend us on Facebook</strong> — opens your Page</li>
+    </ul>
+
+    <h3>Make sure your buttons point to the right Page</h3>
+    <ol class="steps">
+      <li>Open your Facebook <strong>Page</strong> (not a personal profile).</li>
+      <li>Make sure <strong>Reviews/Recommendations are turned on</strong>:
+        Page → <em>Settings</em> → <em>Privacy</em> → <em>Page and tagging</em>
+        (or <em>Templates and tabs</em> → enable the <strong>Reviews</strong> tab).</li>
+      <li>Confirm these two values in the site settings (file
+        <code>.env</code>) match your real Page:</li>
+    </ol>
+    <pre><code>NEXT_PUBLIC_FACEBOOK_URL=https://www.facebook.com/profile.php?id=YOUR_PAGE_ID
+NEXT_PUBLIC_FACEBOOK_REVIEWS_URL=https://www.facebook.com/profile.php?id=YOUR_PAGE_ID&amp;sk=reviews</code></pre>
+
+    <div class="callout warn">
+      <strong>Why Facebook reviews can't auto-update like Google</strong>
+      Facebook (Meta) shut down public, automatic access to Page reviews. Pulling
+      them now would require a Facebook App, Business Verification, a special
+      “Page Public Content Access” permission with app review, and tokens that
+      expire — fragile and routinely rejected. The reliable approach is the
+      <strong>link-out button</strong> here, plus manually featuring your best
+      Facebook recommendations as testimonials (Section 4).
+    </div>
+  </div>
+
+  <div class="section">
+    <h2><span class="num">4</span>Featuring specific reviews (manual)</h2>
+    <p>For full control — to spotlight your very best Google or Facebook reviews
+    in the homepage slider and testimonials grid — copy them into the admin as
+    testimonials. This is the recommended, fully compliant way to highlight
+    chosen reviews.</p>
+    <ol class="steps">
+      <li>When a client leaves a great review on Google or Facebook, copy the text.</li>
+      <li>In the website admin, add a new <strong>Testimonial</strong>: name,
+        star rating, the quote, and (optionally) which service it's about.</li>
+      <li>Save — it appears on the homepage and Testimonials page right away.</li>
+    </ol>
+  </div>
+
+  <div class="section">
+    <h2><span class="num">5</span>Quick troubleshooting</h2>
+    <table>
+      <tr><th>Symptom</th><th>Likely cause &amp; fix</th></tr>
+      <tr><td>No Google reviews appear</td><td>Key missing/blank, or “Places API (New)” / Billing not enabled in Google Cloud. Re-check Section 2.</td></tr>
+      <tr><td>Reviews show then vanish</td><td>API key restricted too tightly or quota hit. Loosen API restriction to “Places API (New)”.</td></tr>
+      <tr><td>Wrong business shows</td><td><code>placeId</code> in <code>lib/site.ts</code> points to the wrong listing — refresh it (Section 1).</td></tr>
+      <tr><td>Facebook button opens wrong page</td><td>Update <code>NEXT_PUBLIC_FACEBOOK_URL</code> / <code>..._REVIEWS_URL</code> (Section 3).</td></tr>
+    </table>
+    <div class="callout">
+      <strong>Where the technical details live</strong>
+      A developer-facing companion document with the exact code files is in the
+      project at <code>docs/REVIEWS-INTEGRATION.md</code>.
+    </div>
+  </div>
+
+  <div class="footer">
+    Emcey Brows Aesthetics — Reviews Setup Guide · Keep your Google API key private ·
+    Questions? Contact your website developer.
+  </div>
+
+</div>
+</body>
+</html>

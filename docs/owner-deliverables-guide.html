@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Emcey Brows — What We Need From You</title>
+<style>
+  :root {
+    --ink: #2b2521; --ink-soft: #6b5f57;
+    --terracotta: #c0674b; --terracotta-dark: #9c4f38;
+    --gold: #b8902f; --blush: #f6e7e2; --nude: #efe6df; --line: #e6dcd4;
+    --google: #4285f4; --facebook: #1877f2;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { font-family: "Segoe UI", Helvetica, Arial, sans-serif; color: var(--ink);
+    margin: 0; line-height: 1.6; font-size: 12.5px; }
+  .page { padding: 0 52px; }
+
+  .cover { background: linear-gradient(135deg, var(--terracotta), var(--terracotta-dark));
+    color: #fff; padding: 58px 52px 44px; }
+  .cover .eyebrow { text-transform: uppercase; letter-spacing: 3px; font-size: 12px;
+    opacity: .85; margin-bottom: 14px; }
+  .cover h1 { font-size: 32px; line-height: 1.15; margin: 0 0 12px; font-weight: 700; }
+  .cover p { font-size: 14px; max-width: 580px; opacity: .95; margin: 0; }
+
+  h2 { font-size: 18px; color: var(--terracotta-dark); margin: 24px 0 6px;
+    padding-top: 12px; border-top: 2px solid var(--line); }
+  h2 .num { display: inline-grid; place-items: center; width: 25px; height: 25px;
+    background: var(--terracotta); color: #fff; border-radius: 50%;
+    font-size: 13px; margin-right: 10px; vertical-align: middle; }
+  h3 { font-size: 14px; color: var(--ink); margin: 16px 0 4px; }
+  p { margin: 8px 0; }
+  .lead { font-size: 13.5px; margin: 16px 0; }
+  .muted { color: var(--ink-soft); }
+  code { background: #f3ece6; padding: 1px 6px; border-radius: 5px;
+    font-family: "Consolas", monospace; font-size: 11.5px; color: var(--terracotta-dark); }
+
+  ul, ol { margin: 8px 0; padding-left: 22px; }
+  li { margin: 6px 0; }
+  ol.steps { counter-reset: step; list-style: none; padding-left: 0; }
+  ol.steps > li { position: relative; padding-left: 34px; margin: 11px 0; }
+  ol.steps > li::before { counter-increment: step; content: counter(step);
+    position: absolute; left: 0; top: 0; width: 22px; height: 22px;
+    background: var(--blush); color: var(--terracotta-dark); border-radius: 50%;
+    display: grid; place-items: center; font-weight: 700; font-size: 11px; }
+  .todo { list-style: none; padding-left: 0; }
+  .todo > li { position: relative; padding-left: 28px; margin: 8px 0; }
+  .todo > li::before { content: "\2610"; position: absolute; left: 0; top: -1px;
+    color: var(--terracotta); font-size: 15px; }
+
+  .callout { border-left: 4px solid var(--gold); background: #fbf6ee;
+    padding: 12px 16px; border-radius: 0 10px 10px 0; margin: 14px 0; }
+  .callout.warn { border-color: var(--terracotta); background: #fbeee9; }
+  .callout.google { border-color: var(--google); background: #eef4ff; }
+  .callout.fb { border-color: var(--facebook); background: #eef4ff; }
+  .callout strong { display: block; margin-bottom: 3px; }
+
+  .fill { display: inline-block; min-width: 230px; border-bottom: 2px solid var(--terracotta);
+    height: 16px; vertical-align: middle; }
+
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 11.5px; }
+  th, td { text-align: left; padding: 8px 11px; border: 1px solid var(--line); vertical-align: top; }
+  th { background: var(--blush); color: var(--terracotta-dark); }
+  td.tag { white-space: nowrap; font-weight: 600; }
+
+  .tagpill { display: inline-block; font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px; padding: 2px 9px; border-radius: 20px; color: #fff; vertical-align: middle; }
+  .tagpill.g { background: var(--google); }
+  .tagpill.f { background: var(--facebook); }
+  .tagpill.dev { background: var(--ink-soft); }
+
+  .priority { background: #fbeee9; border: 1px solid var(--line); border-radius: 12px;
+    padding: 16px 20px; margin: 16px 0; }
+  .priority h3 { margin: 0 0 8px; color: var(--terracotta-dark); font-size: 15px; }
+
+  .pagebreak { page-break-before: always; }
+  .footer { margin-top: 30px; padding: 16px 0; border-top: 2px solid var(--line);
+    font-size: 11px; color: var(--ink-soft); text-align: center; }
+  @page { margin: 14mm 0; size: A4; }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="eyebrow">Emcey Brows Aesthetics · Owner Setup Guide</div>
+  <h1>What We Need From You</h1>
+  <p>You own the Google and Facebook accounts — so a few key things can only be
+  done by you. This guide walks you through exactly what to hand over (and how),
+  so we can finish your website, power up your Google search ranking, and show
+  your real reviews live on the site. No technical knowledge needed — just follow
+  the steps in order.</p>
+</div>
+
+<div class="page">
+
+  <p class="lead">There are <strong>three jobs</strong> on this page, and each tells
+  you what to <em>collect</em> and what <em>access to grant</em>. When you grant
+  access on Google or Facebook, send the invite to <strong>our email:</strong>
+  <span class="fill"></span> &nbsp;<span class="muted">(write it here so you don't forget)</span>.</p>
+
+  <table>
+    <tr><th>Job</th><th>What it gives you</th><th>Who does it</th></tr>
+    <tr><td class="tag">1 · Website content</td><td>A finished, accurate, on-brand site</td><td><span class="tagpill dev">You + Us</span></td></tr>
+    <tr><td class="tag">2 · Google &amp; SEO</td><td>Getting found on Google "near me" searches</td><td><span class="tagpill g">Google</span></td></tr>
+    <tr><td class="tag">3 · Live reviews</td><td>Your real 5-star reviews shown on the site automatically</td><td><span class="tagpill g">Google</span> <span class="tagpill f">Facebook</span></td></tr>
+  </table>
+
+  <!-- ============ JOB 1 ============ -->
+  <h2><span class="num">1</span>Website content &amp; access</h2>
+  <p>So the site shows the right information and we can publish it to your real
+  web address, please send us:</p>
+
+  <h3>A. Business information (must match everywhere)</h3>
+  <ul class="todo">
+    <li>Exact <strong>business name</strong> as you want it shown</li>
+    <li>Full <strong>address</strong> (the one on your Google Maps listing, word-for-word)</li>
+    <li><strong>Phone numbers</strong> — landline &amp; mobile</li>
+    <li><strong>Opening hours</strong> for each day</li>
+    <li><strong>Email address</strong> for booking enquiries</li>
+  </ul>
+  <div class="callout warn">
+    <strong>Why "word-for-word" matters</strong>
+    Google ranks you higher when your name, address &amp; phone number are written
+    <em>identically</em> on your website, Google, and Facebook. Even small
+    differences ("St." vs "Street") can hurt. Pick one version and we'll use it
+    everywhere.
+  </div>
+
+  <h3>B. Brand &amp; photos</h3>
+  <ul class="todo">
+    <li>Your <strong>logo</strong> (highest-quality file you have)</li>
+    <li><strong>Before/after photos</strong> and studio photos you're happy to publish</li>
+    <li>Confirmed <strong>service list &amp; prices</strong> (e.g. the Ombre &amp; Nano promo cards you sent)</li>
+    <li>A short <strong>"about us"</strong> blurb, if you'd like it personalised</li>
+  </ul>
+
+  <h3>C. The web address (domain)</h3>
+  <ul class="todo">
+    <li>Tell us the <strong>domain name</strong> you want (e.g. <code>emceybrows.com</code>)</li>
+    <li>If you already bought one, share the <strong>login to the company you bought it from</strong> (GoDaddy, Namecheap, etc.) — or add us so we can point it to the new site</li>
+    <li>If you haven't bought one yet, tell us and we'll guide you</li>
+  </ul>
+
+  <!-- ============ JOB 2 ============ -->
+  <h2><span class="num">2</span>Google &amp; SEO setup <span class="tagpill g">Google</span></h2>
+  <p>This is the most important section for getting <strong>found</strong>. There
+  are three parts — all done from <em>your</em> Google account.</p>
+
+  <h3>2A · Google Business Profile (your Maps listing)</h3>
+  <p>This is the single biggest driver of "eyebrow near me" results. Make us a
+  <strong>manager</strong> so we can optimise it with you:</p>
+  <ol class="steps">
+    <li>Go to <code>business.google.com</code> and sign in with the account that owns the listing.</li>
+    <li>Open your business → <strong>Settings</strong> (gear icon) → <strong>People &amp; access</strong> (or "Managers").</li>
+    <li>Click <strong>Add</strong> → enter <strong>our email</strong> (top of page) → choose role <strong>Manager</strong> → <strong>Invite</strong>.</li>
+    <li>Make sure the listing is <strong>verified</strong> (look for the verified badge). If it isn't, Google will mail/SMS you a code — complete that step.</li>
+  </ol>
+  <div class="callout google">
+    <strong>If you've never claimed it</strong>
+    Search your business name on Google Maps → click <em>"Claim this business"</em>
+    / <em>"Own this business?"</em> and follow the verification. Then do the steps above.
+  </div>
+
+  <h3>2B · Google Search Console (proves you own the website)</h3>
+  <p>This lets Google index your new site quickly. Two easy options — pick one:</p>
+  <ul>
+    <li><strong>Option 1 (simplest):</strong> after we verify the site, we give you a short
+      <strong>verification code</strong>; you do nothing else. <span class="muted">— handled by us once the domain is live.</span></li>
+    <li><strong>Option 2 (you add us):</strong> if you set up Search Console yourself, open it →
+      <strong>Settings</strong> → <strong>Users and permissions</strong> → <strong>Add user</strong> →
+      enter <strong>our email</strong> → permission <strong>Owner</strong> or <strong>Full</strong>.</li>
+  </ul>
+
+  <h3>2C · Google API key for live reviews <span class="tagpill g">also powers Job 3</span></h3>
+  <p>This one key switches on the <strong>automatic, real-time Google reviews</strong>
+  on your site. It takes about 10 minutes and needs a card on file (usage is
+  effectively free at your volume, but Google requires one).</p>
+  <ol class="steps">
+    <li>Go to <code>console.cloud.google.com</code> → create a project (call it "Emcey Brows").</li>
+    <li>Open <strong>APIs &amp; Services → Library</strong> → search <strong>"Places API (New)"</strong> → <strong>Enable</strong>.</li>
+    <li>Open <strong>Billing</strong> → add a payment card to the project (required by Google).</li>
+    <li>Open <strong>APIs &amp; Services → Credentials → Create credentials → API key</strong>.</li>
+    <li><strong>Copy the key</strong> (starts with <code>AIza…</code>) and send it to us privately. We lock it down and install it safely server-side — it never appears in your website's public code.</li>
+  </ol>
+  <div class="callout">
+    <strong>Don't want to touch billing?</strong>
+    No problem — your reviews still show on the site via the <strong>"Read / Write a
+    review"</strong> buttons that link to your Google page. The API key only adds the
+    <em>automatic</em> live-review display. You can switch it on anytime later.
+  </div>
+
+  <!-- ============ JOB 3 ============ -->
+  <h2><span class="num">3</span>Real-time testimonials &amp; reviews</h2>
+
+  <h3>3A · Google reviews <span class="tagpill g">Google</span></h3>
+  <ul class="todo">
+    <li>Provide the <strong>API key</strong> from step 2C (that's all that's needed — reviews then appear and refresh automatically).</li>
+    <li>Send your <strong>Google Maps listing link</strong>: on Maps, open your business → <strong>Share</strong> → <strong>Copy link</strong>.</li>
+    <li><strong>Keep asking happy clients</strong> for a Google review and reply to each — this is what actually grows your rating over time.</li>
+  </ul>
+  <div class="callout google">
+    <strong>Good to know</strong>
+    Google shows up to <strong>5 reviews</strong> at a time and chooses which ones —
+    that's a Google rule, not a limit of your site. For specific favourites, send
+    them to us and we'll feature them as hand-picked testimonials too.
+  </div>
+
+  <h3>3B · Facebook reviews <span class="tagpill f">Facebook</span></h3>
+  <p>Facebook no longer lets <em>any</em> website pull its reviews automatically
+  (Meta locked this down). So here's the realistic, durable approach:</p>
+  <ol class="steps">
+    <li>Confirm you have a Facebook <strong>Page</strong> (a business page — not your personal profile).</li>
+    <li>Turn <strong>Reviews/Recommendations ON</strong>: on your Page → <strong>Settings</strong> →
+      <strong>Privacy → Page and tagging</strong> (or <strong>Templates and tabs → enable the Reviews tab</strong>).</li>
+    <li>Send us your <strong>Page link</strong> and your <strong>Reviews tab link</strong>
+      (usually <code>facebook.com/YourPageName/reviews</code>). We point the site's
+      Facebook buttons straight at them.</li>
+    <li>When a client leaves a great recommendation, <strong>screenshot it or copy the
+      text</strong> and send it over — we'll feature your best ones as testimonials on the site.</li>
+  </ol>
+  <div class="callout fb">
+    <strong>Optional:</strong> if you'd like us to help manage the Page, add <strong>our email</strong>
+    as an admin/editor under <em>Page → Settings → Page roles / New Pages experience → People with access</em>.
+  </div>
+
+  <!-- ============ CHECKLIST ============ -->
+  <div class="pagebreak"></div>
+  <h2><span class="num">✓</span>Your one-page checklist</h2>
+  <div class="priority">
+    <h3>Send us these (most impact first)</h3>
+    <ul class="todo">
+      <li><strong>Add us as Manager</strong> on your Google Business Profile <span class="tagpill g">Google</span></li>
+      <li><strong>Confirm your name / address / phone / hours</strong> — one exact version</li>
+      <li><strong>Logo + photos + final services &amp; prices</strong></li>
+      <li><strong>Domain name</strong> (and registrar login, if you have one)</li>
+      <li><strong>Google API key</strong> for live reviews (step 2C) <span class="tagpill g">Google</span></li>
+      <li><strong>Google Maps listing link</strong> + <strong>Facebook Page &amp; Reviews links</strong> <span class="tagpill g">Google</span> <span class="tagpill f">Facebook</span></li>
+      <li><strong>Turn ON Facebook reviews</strong> tab <span class="tagpill f">Facebook</span></li>
+    </ul>
+  </div>
+
+  <table>
+    <tr><th>Item</th><th>Where you get it</th><th>Send us</th></tr>
+    <tr><td class="tag">Business Profile access</td><td>business.google.com → People &amp; access</td><td>An invite to our email (Manager)</td></tr>
+    <tr><td class="tag">Maps listing link</td><td>Google Maps → your business → Share</td><td>The copied link</td></tr>
+    <tr><td class="tag">Google API key</td><td>console.cloud.google.com (step 2C)</td><td>The <code>AIza…</code> key (privately)</td></tr>
+    <tr><td class="tag">Facebook Page link</td><td>Your Facebook Page address bar</td><td>Page link + /reviews link</td></tr>
+    <tr><td class="tag">Domain</td><td>Your registrar (GoDaddy, etc.)</td><td>Name + login, or add us</td></tr>
+    <tr><td class="tag">Content</td><td>You</td><td>Logo, photos, services, hours</td></tr>
+  </table>
+
+  <div class="callout warn">
+    <strong>One honest note about reaching #1</strong>
+    No website alone guarantees the top spot — Google decides it mostly from your
+    Business Profile and your reviews. The site now does its full part; the items
+    above are the pieces only you can provide. Hand them over, keep collecting
+    reviews, stay consistent for a few months, and the rankings climb.
+  </div>
+
+  <div class="footer">
+    Emcey Brows Aesthetics · Imus, Cavite<br/>
+    Send anything sensitive (API key, logins) to us privately — never post them publicly.
+  </div>
+
+</div>
+</body>
+</html>

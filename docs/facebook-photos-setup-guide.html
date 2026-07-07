@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Emcey Brows — Show Your Facebook Photos on the Website</title>
+<style>
+  :root {
+    --ink: #2b2521; --ink-soft: #6b5f57;
+    --terracotta: #c0674b; --terracotta-dark: #9c4f38;
+    --gold: #b8902f; --blush: #f6e7e2; --nude: #efe6df; --line: #e6dcd4;
+    --facebook: #1877f2; --facebook-dark: #0e5fc0;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { font-family: "Segoe UI", Helvetica, Arial, sans-serif; color: var(--ink);
+    margin: 0; line-height: 1.6; font-size: 12.5px; }
+  .page { padding: 0 52px; }
+
+  .cover { background: linear-gradient(135deg, var(--facebook), var(--facebook-dark));
+    color: #fff; padding: 58px 52px 44px; }
+  .cover .eyebrow { text-transform: uppercase; letter-spacing: 3px; font-size: 12px;
+    opacity: .85; margin-bottom: 14px; }
+  .cover h1 { font-size: 31px; line-height: 1.15; margin: 0 0 12px; font-weight: 700; }
+  .cover p { font-size: 14px; max-width: 600px; opacity: .96; margin: 0; }
+
+  h2 { font-size: 18px; color: var(--terracotta-dark); margin: 24px 0 6px;
+    padding-top: 12px; border-top: 2px solid var(--line); }
+  h2 .num { display: inline-grid; place-items: center; width: 25px; height: 25px;
+    background: var(--facebook); color: #fff; border-radius: 50%;
+    font-size: 13px; margin-right: 10px; vertical-align: middle; }
+  h3 { font-size: 14px; color: var(--ink); margin: 16px 0 4px; }
+  p { margin: 8px 0; }
+  .lead { font-size: 13.5px; margin: 16px 0; }
+  .muted { color: var(--ink-soft); }
+  code { background: #eef4ff; padding: 1px 6px; border-radius: 5px;
+    font-family: "Consolas", monospace; font-size: 11.5px; color: var(--facebook-dark); }
+
+  ul, ol { margin: 8px 0; padding-left: 22px; }
+  li { margin: 6px 0; }
+  ol.steps { counter-reset: step; list-style: none; padding-left: 0; }
+  ol.steps > li { position: relative; padding-left: 34px; margin: 11px 0; }
+  ol.steps > li::before { counter-increment: step; content: counter(step);
+    position: absolute; left: 0; top: 0; width: 22px; height: 22px;
+    background: #e7f0ff; color: var(--facebook-dark); border-radius: 50%;
+    display: grid; place-items: center; font-weight: 700; font-size: 11px; }
+
+  .callout { border-left: 4px solid var(--gold); background: #fbf6ee;
+    padding: 12px 16px; border-radius: 0 10px 10px 0; margin: 14px 0; }
+  .callout.warn { border-color: var(--terracotta); background: #fbeee9; }
+  .callout.fb { border-color: var(--facebook); background: #eef4ff; }
+  .callout.ok { border-color: #4f9d69; background: #eef7f0; }
+  .callout strong { display: block; margin-bottom: 3px; }
+
+  .split { display: flex; gap: 14px; margin: 16px 0; }
+  .split > div { flex: 1; border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+  .split .you { background: #eef4ff; }
+  .split .us { background: #f6f2ee; }
+  .split h4 { margin: 0 0 6px; font-size: 13px; }
+
+  .send { background: #eef4ff; border: 1px solid #cddcff;
+    border-radius: 12px; padding: 16px 20px; margin: 16px 0; }
+  .send h3 { margin: 0 0 8px; color: var(--facebook-dark); font-size: 15px; }
+  .send ol { margin: 6px 0; }
+
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 11.5px; }
+  th, td { text-align: left; padding: 8px 11px; border: 1px solid var(--line); vertical-align: top; }
+  th { background: var(--blush); color: var(--terracotta-dark); }
+
+  .pagebreak { page-break-before: always; }
+  .footer { margin-top: 30px; padding: 16px 0; border-top: 2px solid var(--line);
+    font-size: 11px; color: var(--ink-soft); text-align: center; }
+  @page { margin: 14mm 0; size: A4; }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <div class="eyebrow">Emcey Brows Aesthetics · Facebook Setup Guide</div>
+  <h1>Show Your Facebook Photos on the Website</h1>
+  <p>Your website can automatically display the photos you post on your Facebook
+  Page — styled to match your Gallery. The code is already built and waiting.
+  It just needs one thing that only you can create: a Facebook access token.
+  This guide walks you through it. No technical knowledge needed — you do the
+  clicking, and we handle everything technical.</p>
+</div>
+
+<div class="page">
+
+  <div class="callout fb">
+    <strong>First, an honest note about Facebook reviews</strong>
+    Facebook <em>photos</em> can appear automatically (this guide). Facebook
+    <em>reviews</em> cannot — Meta shut down public access to Page reviews, so no
+    website can pull them. The reliable way to show your best Facebook
+    recommendations is to feature them manually as testimonials on the site.
+    This guide is about <strong>photos</strong>.
+  </div>
+
+  <h2><span class="num">i</span>How this works</h2>
+  <p class="lead">You do the parts that need your Facebook login. Then you send
+  us three values, and we do all the technical work — you never touch the hard part.</p>
+
+  <div class="split">
+    <div class="you">
+      <h4>✋ You do (needs your account)</h4>
+      <ul>
+        <li>Create a Facebook App (~3 min)</li>
+        <li>Grant two read-only permissions</li>
+        <li>Copy 3 values and send them to us privately</li>
+      </ul>
+    </div>
+    <div class="us">
+      <h4>🛠 We do (the technical part)</h4>
+      <ul>
+        <li>Exchange your values into a <strong>long-lived, non-expiring</strong> Page token</li>
+        <li>Find your Page's photo access automatically</li>
+        <li>Install it and confirm your real photos appear in the Gallery</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout ok">
+    <strong>Good news: it won't keep expiring</strong>
+    Done the proper (long-lived) way we handle for you, the token is effectively
+    permanent. It only breaks if you change your Facebook password or remove the app.
+  </div>
+
+  <!-- STEP 1 -->
+  <h2><span class="num">1</span>Create a Facebook App <span class="muted">(~3 min)</span></h2>
+  <ol class="steps">
+    <li>Go to <code>developers.facebook.com</code> → top-right <strong>My Apps</strong> → <strong>Create App</strong>.</li>
+    <li>If asked "What do you want your app to do?", pick <strong>Other</strong> → <strong>Next</strong>.</li>
+    <li>App type: <strong>Business</strong> → <strong>Next</strong>.</li>
+    <li>Name it <strong>Emcey Brows Website</strong>, add your email → <strong>Create app</strong>
+      (re-enter your Facebook password if prompted).</li>
+  </ol>
+
+  <!-- STEP 2 -->
+  <h2><span class="num">2</span>Open Graph API Explorer &amp; grant permissions</h2>
+  <ol class="steps">
+    <li>In the left menu (or search) open <strong>Tools → Graph API Explorer</strong>
+      — or go to <code>developers.facebook.com/tools/explorer</code>.</li>
+    <li>Top-right <strong>Meta App</strong> dropdown → select <strong>Emcey Brows Website</strong>.</li>
+    <li>Click <strong>Add a Permission</strong> and tick these two:
+      <strong>pages_show_list</strong> and <strong>pages_read_engagement</strong>.
+      <span class="muted">(Both are read-only — they let us read your photos, nothing else.)</span></li>
+    <li>Click <strong>Generate Access Token</strong> → a popup asks you to log in and
+      <strong>allow access to your Emcey Brows page</strong> → approve it.</li>
+  </ol>
+  <div class="callout fb">
+    <strong>Why no "app review" is needed</strong>
+    Because it's <em>your</em> page and <em>your</em> app, Facebook lets you read your
+    own photos immediately — you skip the weeks-long approval process that trips
+    most people up.
+  </div>
+
+  <!-- STEP 3 -->
+  <h2><span class="num">3</span>Send us three values (privately)</h2>
+  <div class="send">
+    <h3>Copy these and send them to us</h3>
+    <ol class="steps">
+      <li><strong>App ID</strong> — from your app's <strong>Settings → Basic</strong> page.</li>
+      <li><strong>App Secret</strong> — same page, click <strong>Show</strong> to reveal it.</li>
+      <li><strong>Access token</strong> — the long string now showing in the
+        Graph API Explorer box.</li>
+    </ol>
+  </div>
+
+  <table>
+    <tr><th>Value</th><th>Where to find it</th></tr>
+    <tr><td><strong>App ID</strong></td><td>App dashboard → Settings → Basic</td></tr>
+    <tr><td><strong>App Secret</strong></td><td>App dashboard → Settings → Basic → <em>Show</em></td></tr>
+    <tr><td><strong>Access token</strong></td><td>Tools → Graph API Explorer (the token box)</td></tr>
+  </table>
+
+  <h3>Then we finish it for you</h3>
+  <ul>
+    <li>Exchange your values into a <strong>long-lived, non-expiring Page token</strong></li>
+    <li>Detect your Page's photo access automatically</li>
+    <li>Install it and <strong>load your Gallery to confirm your real Facebook photos appear</strong></li>
+  </ul>
+
+  <div class="callout warn">
+    <strong>Keep these private — and reset afterwards</strong>
+    The App ID, App Secret, and token are sensitive. Send them privately, never
+    post them publicly. Once everything works, it's good practice to
+    <strong>reset the App Secret</strong> (Settings → Basic) — the long-lived Page
+    token we generate keeps working regardless.
+  </div>
+
+  <div class="footer">
+    Emcey Brows Aesthetics · Imus, Cavite<br/>
+    Facebook photos appear automatically · Facebook reviews are featured manually · Keep tokens private
+  </div>
+
+</div>
+</body>
+</html>

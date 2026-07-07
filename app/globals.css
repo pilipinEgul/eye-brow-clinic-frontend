@@ -186,13 +186,6 @@ h1, h2, h3, h4, h5 {
   color: var(--color-terracotta-500);
 }
 
-.eyebrow::before {
-  content: "";
-  width: 1.5rem;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--color-terracotta-400));
-}
-
 .divider-dot::before {
   content: "•";
   margin: 0 0.6rem;

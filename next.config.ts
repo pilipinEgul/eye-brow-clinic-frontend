@@ -23,6 +23,11 @@ const nextConfig: NextConfig = {
         protocol: "http",
         hostname: "localhost",
       },
+      {
+        // Facebook Page photos (Graph API returns *.fbcdn.net image URLs).
+        protocol: "https",
+        hostname: "**.fbcdn.net",
+      },
     ],
   },
   experimental: {

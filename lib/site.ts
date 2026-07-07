@@ -35,7 +35,7 @@ export const site = {
       "https://www.google.com/maps/place/Emcey+Brows+Aesthetics+-+Imus/@14.3884412,120.9393859,17z/data=!4m7!3m6!1s0x3397d30071611fff:0xdaef502707019be4!8m2!3d14.3884412!4d120.9393859!16s%2Fg%2F11mzt2ws4m",
     // Deep link that opens the "write a review" dialog on Google.
     googleReview:
-      "https://search.google.com/local/writereview?placeid=ChIJ_x9hcQDTlzMR5JsBByxQ79o",
+      "https://search.google.com/local/writereview?placeid=ChIJ_x9hcQDTlzMR5JsBBydQ79o",
   },
   // The env var is only honored if it's a *complete* embed URL. An incomplete
   // value (e.g. the placeholder "https://...maps/embed?pb=" from .env.example)
@@ -50,7 +50,7 @@ export const site = {
         : "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d61875.0!2d120.93938!3d14.38844!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397d30071611fff:0xdaef502707019be4!2sEmcey+Brows+Aesthetics+-+Imus!5e0!3m2!1sen!2sph!4v0";
     })(),
   geo: { lat: 14.3884412, lng: 120.9393859 },
-  placeId: "ChIJ_x9hcQDTlzMR5JsBByxQ79o",
+  placeId: "ChIJ_x9hcQDTlzMR5JsBBydQ79o",
   areasServed: ["Imus", "Bacoor", "Dasmariñas", "General Trias", "Cavite"],
 } as const;
 
