@@ -1,5 +1,6 @@
 import { getGoogleReviews, type GoogleReview } from "@/lib/google-reviews";
-import { site } from "@/lib/site";
+import { ExpandableQuote } from "@/components/ExpandableQuote";
+import { ReviewsGrid } from "@/components/ReviewsGrid";
 
 function Stars({ rating }: { rating: number }) {
   const rounded = Math.round(rating);
@@ -42,16 +43,14 @@ function GoogleGlyph() {
 
 function ReviewCard({ r }: { r: GoogleReview }) {
   return (
-    <figure className="card relative flex h-full flex-col p-6 sm:p-7">
+    <figure className="card card-hover relative flex h-full flex-col p-6 sm:p-7">
       <div className="flex items-center justify-between">
         <Stars rating={r.rating} />
         <span className="text-gold-500" title="Posted on Google">
           <GoogleGlyph />
         </span>
       </div>
-      <blockquote className="mt-4 line-clamp-6 flex-1 font-display text-lg leading-relaxed text-ink-700">
-        {r.text}
-      </blockquote>
+      <ExpandableQuote text={r.text} />
       <figcaption className="mt-6 flex items-center gap-3 border-t border-nude-100 pt-4 text-sm">
         {r.profilePhoto ? (
           // eslint-disable-next-line @next/next/no-img-element -- Google avatar URLs are short-lived and must not be optimized/cached.
@@ -117,30 +116,11 @@ export async function GoogleReviews({ className = "" }: { className?: string }) 
         ) : null}
       </div>
 
-      <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {data.reviews.map((r, i) => (
+      <ReviewsGrid
+        cards={data.reviews.map((r, i) => (
           <ReviewCard key={`${r.author}-${i}`} r={r} />
         ))}
-      </div>
-
-      <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-        <a
-          href={data.mapsUri}
-          target="_blank"
-          rel="noreferrer"
-          className="btn btn-secondary"
-        >
-          See all reviews on Google
-        </a>
-        <a
-          href={site.socials.googleReview}
-          target="_blank"
-          rel="noreferrer"
-          className="btn btn-primary"
-        >
-          Write a Google review
-        </a>
-      </div>
+      />
     </section>
   );
 }

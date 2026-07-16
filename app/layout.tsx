@@ -1,10 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Inter } from "next/font/google";
 import "./globals.css";
-import { Header } from "@/components/Header";
-import { Footer } from "@/components/Footer";
-import { FloatingCTA } from "@/components/FloatingCTA";
+import { SiteShell } from "@/components/SiteShell";
 import { JsonLd } from "@/components/JsonLd";
+import { ToastProvider } from "@/lib/toast";
 import { localBusinessSchema } from "@/lib/schemas";
 import { site } from "@/lib/site";
 
@@ -79,10 +78,9 @@ export default function RootLayout({
       className={`${inter.variable} ${cormorant.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-cream-100 text-ink-900">
-        <Header />
-        <main className="flex-1 pb-24 md:pb-0">{children}</main>
-        <Footer />
-        <FloatingCTA />
+        <ToastProvider>
+          <SiteShell>{children}</SiteShell>
+        </ToastProvider>
         <JsonLd data={localBusinessSchema()} />
       </body>
     </html>

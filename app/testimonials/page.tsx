@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { api } from "@/lib/api";
-import { TestimonialCard } from "@/components/TestimonialCard";
 import { SectionHeading } from "@/components/SectionHeading";
 import { ReviewLinks } from "@/components/ReviewLinks";
 import { GoogleReviews } from "@/components/GoogleReviews";
@@ -22,8 +20,6 @@ const happyClientStrip = [
 ];
 
 export default async function TestimonialsPage() {
-  const { data: testimonials } = await api.testimonials({ per_page: 30 });
-
   return (
     <>
       <section className="section">
@@ -51,18 +47,6 @@ export default async function TestimonialsPage() {
               </div>
             ))}
           </div>
-
-          {testimonials.length === 0 ? (
-            <p className="mt-12 text-center text-sm text-ink-500">
-              Once the database is seeded, testimonials will appear here.
-            </p>
-          ) : (
-            <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {testimonials.map((t) => (
-                <TestimonialCard key={t.id} testimonial={t} />
-              ))}
-            </div>
-          )}
 
           <GoogleReviews className="mt-16" />
 

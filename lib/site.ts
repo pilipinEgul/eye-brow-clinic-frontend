@@ -33,9 +33,14 @@ export const site = {
     // Public Google Maps listing (read existing reviews here).
     googleMaps:
       "https://www.google.com/maps/place/Emcey+Brows+Aesthetics+-+Imus/@14.3884412,120.9393859,17z/data=!4m7!3m6!1s0x3397d30071611fff:0xdaef502707019be4!8m2!3d14.3884412!4d120.9393859!16s%2Fg%2F11mzt2ws4m",
-    // Deep link that opens the "write a review" dialog on Google.
+    // Deep link that opens the "write a review" dialog on Google. Overridable
+    // for testing: NEXT_PUBLIC_GOOGLE_REVIEW_URL (full URL) wins; otherwise it
+    // is built from NEXT_PUBLIC_GOOGLE_PLACE_ID; otherwise the real Emcey listing.
     googleReview:
-      "https://search.google.com/local/writereview?placeid=ChIJ_x9hcQDTlzMR5JsBBydQ79o",
+      process.env.NEXT_PUBLIC_GOOGLE_REVIEW_URL ||
+      (process.env.NEXT_PUBLIC_GOOGLE_PLACE_ID
+        ? `https://search.google.com/local/writereview?placeid=${process.env.NEXT_PUBLIC_GOOGLE_PLACE_ID}`
+        : "https://search.google.com/local/writereview?placeid=ChIJ_x9hcQDTlzMR5JsBBydQ79o"),
   },
   // The env var is only honored if it's a *complete* embed URL. An incomplete
   // value (e.g. the placeholder "https://...maps/embed?pb=" from .env.example)
@@ -62,5 +67,6 @@ export const nav = {
     { label: "Gallery", href: "/gallery" },
     { label: "Testimonials", href: "/testimonials" },
     { label: "Contact", href: "/contact" },
+    { label: "Track booking", href: "/track" },
   ],
 } as const;

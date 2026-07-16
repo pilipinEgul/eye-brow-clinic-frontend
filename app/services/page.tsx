@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { staticCategories, staticServices } from "@/lib/static-content";
+import { getServices, getServiceCategories } from "@/lib/content";
 import { ServiceCard } from "@/components/ServiceCard";
 import { SectionHeading } from "@/components/SectionHeading";
 
@@ -12,9 +12,11 @@ export const metadata: Metadata = {
     "Explore ombre microshading, digital nano hair-stroke brows, lip tinting, Korean lashliner, facials and laser treatments at Emcey Brows Aesthetics in Imus, Cavite.",
 };
 
-export default function ServicesPage() {
-  const services = { data: staticServices };
-  const categories = { data: staticCategories };
+export default async function ServicesPage() {
+  const [services, categories] = await Promise.all([
+    getServices().then((data) => ({ data })),
+    getServiceCategories().then((data) => ({ data })),
+  ]);
 
   return (
     <>

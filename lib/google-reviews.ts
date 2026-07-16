@@ -56,13 +56,52 @@ const EMPTY: GoogleReviewsResult = {
   reviews: [],
 };
 
+/**
+ * Offline demo data — used when GOOGLE_REVIEWS_DEMO=1. Lets you preview the
+ * full reviews UI with NO Google account, NO API key, and NO business listing.
+ * This is the "dev mode" for reviews: nothing leaves your machine.
+ */
+const DEMO: GoogleReviewsResult = {
+  available: true,
+  rating: 4.9,
+  total: 128,
+  mapsUri: site.socials.googleMaps,
+  reviews: [
+    {
+      author: "Bea Santos",
+      rating: 5,
+      text: "My ombre brows healed beautifully and look so natural. The studio is spotless and Emcey is so gentle. Worth every peso!",
+      relativeTime: "2 weeks ago",
+    },
+    {
+      author: "Karla Mendoza",
+      rating: 5,
+      text: "Booked a hydra facial and my skin has never looked better. Relaxing space, professional staff. Already rebooked!",
+      relativeTime: "a month ago",
+    },
+    {
+      author: "Janine Reyes",
+      rating: 4,
+      text: "Lovely results on my lash liner. Slight wait past my slot but the outcome made up for it. Highly recommend.",
+      relativeTime: "2 months ago",
+    },
+  ],
+};
+
 export async function getGoogleReviews(): Promise<GoogleReviewsResult> {
+  if (process.env.GOOGLE_REVIEWS_DEMO === "1") return DEMO;
+
   const key = process.env.GOOGLE_PLACES_API_KEY;
-  if (!key || !site.placeId) return EMPTY;
+  // Server-only override so you can point at ANY public Place ID while testing
+  // (e.g. a well-known cafe) without editing site.ts. Falls back to the real
+  // Emcey Brows listing. Reading public reviews needs only an API key — it does
+  // NOT require owning the Google Business Profile.
+  const placeId = process.env.GOOGLE_PLACE_ID || site.placeId;
+  if (!key || !placeId) return EMPTY;
 
   try {
     const res = await fetch(
-      `https://places.googleapis.com/v1/places/${site.placeId}`,
+      `https://places.googleapis.com/v1/places/${placeId}`,
       {
         headers: {
           "X-Goog-Api-Key": key,

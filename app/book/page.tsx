@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { staticServices } from "@/lib/static-content";
+import { getServices } from "@/lib/content";
 import { BookingForm } from "@/components/BookingForm";
 import { SectionHeading } from "@/components/SectionHeading";
 
@@ -16,7 +16,7 @@ type PageProps = {
 
 export default async function BookPage({ searchParams }: PageProps) {
   const { service } = await searchParams;
-  const services = staticServices;
+  const services = await getServices();
 
   return (
     <section className="section">

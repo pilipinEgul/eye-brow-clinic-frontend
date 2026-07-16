@@ -1,9 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import { api } from "@/lib/api";
-import { staticServices, staticFaqs, filterFeatured } from "@/lib/static-content";
+import { staticFaqs } from "@/lib/static-content";
+import { getFeaturedServices } from "@/lib/content";
 import { ServiceCard } from "@/components/ServiceCard";
-import { TestimonialSlider } from "@/components/TestimonialSlider";
+import { GoogleReviews } from "@/components/GoogleReviews";
+import { ReviewLinks } from "@/components/ReviewLinks";
 import { SectionHeading } from "@/components/SectionHeading";
 import { FaqList } from "@/components/FaqList";
 import { site } from "@/lib/site";
@@ -40,8 +41,7 @@ const whyPoints = [
 ];
 
 export default async function Home() {
-  const testimonials = await api.testimonials({ featured: true, per_page: 6 });
-  const services = { data: filterFeatured(staticServices).slice(0, 6) };
+  const services = { data: await getFeaturedServices(6) };
   const faqs = { data: staticFaqs.filter((f) => f.service_id === null) };
 
   return (
@@ -319,7 +319,8 @@ export default async function Home() {
             title="Five-star Google reviews"
             description="Real words from real clients across Cavite."
           />
-          <TestimonialSlider testimonials={testimonials.data.slice(0, 6)} />
+          <GoogleReviews className="mt-12" />
+          <ReviewLinks className="mt-12" />
         </div>
       </section>
 

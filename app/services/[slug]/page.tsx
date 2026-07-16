@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { api } from "@/lib/api";
 import { staticFaqs, staticServices } from "@/lib/static-content";
+import { getService } from "@/lib/content";
 import { SectionHeading } from "@/components/SectionHeading";
 import { FaqList } from "@/components/FaqList";
-import { TestimonialCard } from "@/components/TestimonialCard";
+import { ReviewLinks } from "@/components/ReviewLinks";
 import { JsonLd } from "@/components/JsonLd";
 import { breadcrumbSchema, faqSchema, serviceSchema } from "@/lib/schemas";
 import { site } from "@/lib/site";
@@ -21,7 +21,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const service = staticServices.find((s) => s.slug === slug);
+  const service = await getService(slug);
   if (!service) return { title: "Service not found" };
 
   const title = service.meta.title ?? `${service.name} — Emcey Brows`;
@@ -51,14 +51,10 @@ function peso(value: string | null) {
 
 export default async function ServiceDetailPage({ params }: PageProps) {
   const { slug } = await params;
-  const service = staticServices.find((s) => s.slug === slug);
+  const service = await getService(slug);
   if (!service) notFound();
 
   const serviceFaqs = staticFaqs.filter((f) => f.service_id === service.id);
-  const allTestimonials = await api.testimonials({ per_page: 40 });
-  const serviceTestimonials = allTestimonials.data.filter(
-    (t) => t.service?.slug === service.slug,
-  );
 
   const price = peso(service.promo_price ?? service.price);
   const originalPrice = service.promo_price ? peso(service.price) : null;
@@ -298,18 +294,12 @@ export default async function ServiceDetailPage({ params }: PageProps) {
         </section>
       ) : null}
 
-      {serviceTestimonials.length > 0 ? (
-        <section className="section">
-          <div className="container-x">
-            <SectionHeading eyebrow="Real client stories" title="What clients say" />
-            <div className="mt-12 grid gap-6 md:grid-cols-3">
-              {serviceTestimonials.slice(0, 6).map((t) => (
-                <TestimonialCard key={t.id} testimonial={t} />
-              ))}
-            </div>
-          </div>
-        </section>
-      ) : null}
+      <section className="section">
+        <div className="container-x">
+          <SectionHeading eyebrow="Real client stories" title="What clients say" />
+          <ReviewLinks className="mt-12" />
+        </div>
+      </section>
     </>
   );
 }

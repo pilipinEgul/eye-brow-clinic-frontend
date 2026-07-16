@@ -97,6 +97,16 @@ export type AvailabilityDay = {
   slots: AvailabilitySlot[];
 };
 
+export type TrackedBooking = {
+  reference: string;
+  status: "pending" | "confirmed" | "completed" | "cancelled";
+  customer_name: string;
+  scheduled_at: string | null;
+  duration_minutes: number | null;
+  cancellation_reason: string | null;
+  service: { name: string } | null;
+};
+
 export type Promo = {
   id: number;
   code: string;
@@ -127,6 +137,7 @@ export class ApiError extends Error {
 async function apiFetch<T>(path: string, opts: FetchOptions = {}): Promise<T> {
   const { revalidate = 60, ...init } = opts;
   const url = `${API_BASE}${path}`;
+  const method = (init.method ?? "GET").toUpperCase();
 
   try {
     const res = await fetch(url, {
@@ -136,7 +147,9 @@ async function apiFetch<T>(path: string, opts: FetchOptions = {}): Promise<T> {
         "Content-Type": "application/json",
         ...(init.headers || {}),
       },
-      next: { revalidate },
+      // Tag GET reads with "content" so an admin edit can revalidate them
+      // on demand (see app/api/revalidate). Mutations aren't cached.
+      next: method === "GET" ? { revalidate, tags: ["content"] } : { revalidate },
     });
 
     if (!res.ok) {
@@ -259,6 +272,19 @@ export const api = {
     apiFetch<ApiResource<unknown>>("/appointments", {
       method: "POST",
       body: JSON.stringify(body),
+      revalidate: 0,
+    }),
+
+  trackAppointment: (reference: string) =>
+    apiFetch<ApiResource<TrackedBooking>>(
+      `/appointments/track?reference=${encodeURIComponent(reference)}`,
+      { revalidate: 0 },
+    ),
+
+  cancelAppointment: (reference: string, reason: string) =>
+    apiFetch<ApiResource<TrackedBooking>>("/appointments/cancel", {
+      method: "POST",
+      body: JSON.stringify({ reference, reason }),
       revalidate: 0,
     }),
 

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { areas, getArea, areaUrl } from "@/lib/areas";
-import { filterFeatured, staticServices } from "@/lib/static-content";
+import { getFeaturedServices } from "@/lib/content";
 import { ServiceCard } from "@/components/ServiceCard";
 import { SectionHeading } from "@/components/SectionHeading";
 import { FaqList } from "@/components/FaqList";
@@ -52,7 +52,7 @@ export default async function AreaPage({ params }: PageProps) {
   const area = getArea(city);
   if (!area) notFound();
 
-  const featured = filterFeatured(staticServices).slice(0, 6);
+  const featured = await getFeaturedServices(6);
 
   const cityFaqs = [
     {

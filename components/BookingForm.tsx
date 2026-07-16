@@ -1,8 +1,12 @@
 "use client";
 
 import { useCallback, useState, type FormEvent } from "react";
-import { api, type Service } from "@/lib/api";
+import Link from "next/link";
+import { api, ApiError, type Service } from "@/lib/api";
 import { site } from "@/lib/site";
+import { googleCalendarUrl, type CalendarEvent } from "@/lib/calendar";
+import { bookingPdfDataUri } from "@/lib/pdf";
+import { useToast } from "@/lib/toast";
 import { AvailabilityPicker } from "./AvailabilityPicker";
 
 type Props = {
@@ -16,7 +20,9 @@ export function BookingForm({ services, initialServiceSlug }: Props) {
   const [slot, setSlot] = useState<{ date: string; time: string } | null>(null);
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [reference, setReference] = useState<string | null>(null);
+  const [calendarEvent, setCalendarEvent] = useState<CalendarEvent | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const toast = useToast();
 
   const handleSlot = useCallback((next: { date: string; time: string } | null) => {
     setSlot(next);
@@ -56,16 +62,128 @@ export function BookingForm({ services, initialServiceSlug }: Props) {
         scheduled_at: scheduled,
         notes: String(fd.get("notes") ?? "") || undefined,
         promo_code: String(fd.get("promo_code") ?? "") || undefined,
-      })) as { data: { reference?: string } };
+      })) as {
+        data: {
+          reference?: string;
+          scheduled_at?: string;
+          duration_minutes?: number | null;
+          service?: { name?: string } | null;
+        };
+      };
 
-      setReference(result?.data?.reference ?? null);
+      const booking = result?.data;
+      setReference(booking?.reference ?? null);
+
+      const selectedService = services.find((s) => s.id === serviceId);
+      if (booking?.scheduled_at) {
+        setCalendarEvent({
+          serviceName: booking.service?.name ?? selectedService?.name ?? "Appointment",
+          startIso: booking.scheduled_at,
+          durationMinutes:
+            booking.duration_minutes ?? selectedService?.duration_minutes ?? 60,
+          reference: booking.reference ?? null,
+        });
+      } else {
+        setCalendarEvent(null);
+      }
+
       setStatus("success");
       setSlot(null);
       form.reset();
+      toast(
+        booking?.reference
+          ? `Booking received — reference ${booking.reference}.`
+          : "Booking received.",
+      );
     } catch (err) {
       setStatus("error");
-      setErrorMessage(err instanceof Error ? err.message : "Could not submit your booking.");
+      const message =
+        err instanceof ApiError && err.status === 429
+          ? "You’ve sent a few booking requests in a short time. Please wait a few minutes and try again."
+          : err instanceof Error
+            ? err.message
+            : "Could not submit your booking.";
+      setErrorMessage(message);
+      toast(message, "error");
     }
+  }
+
+  if (status === "success") {
+    return (
+      <div className="rounded-3xl border border-nude-100 bg-white p-8 shadow-sm">
+        <div className="font-display text-2xl text-ink-900">You’re booked in ✨</div>
+        <p className="mt-3 text-sm text-ink-700">
+          Booking received{reference ? ` — your reference is ${reference}.` : "."} We’ll confirm shortly via email.
+        </p>
+        <p className="mt-2 text-sm text-ink-700">
+          You can{" "}
+          <Link
+            href={reference ? `/track?ref=${encodeURIComponent(reference)}` : "/track"}
+            className="font-medium text-gold-600 underline hover:text-gold-700"
+          >
+            track or cancel your booking
+          </Link>{" "}
+          anytime using your reference.
+        </p>
+
+        {calendarEvent ? (
+          <>
+            <p className="mt-5 text-sm text-ink-700">Add it to your calendar so you don’t forget:</p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <a
+                href={googleCalendarUrl(calendarEvent)}
+                target="_blank"
+                rel="noreferrer"
+                className="btn btn-primary !min-h-0 !px-4 !py-2 !text-xs"
+              >
+                Add to Google Calendar
+              </a>
+              <a
+                href={bookingPdfDataUri(calendarEvent)}
+                download={`emcey-brows-booking${reference ? `-${reference}` : ""}.pdf`}
+                className="btn btn-secondary !min-h-0 !px-4 !py-2 !text-xs"
+              >
+                Download PDF
+              </a>
+            </div>
+          </>
+        ) : null}
+
+        <p className="mt-5 text-sm text-ink-700">
+          Already a returning client? Share your experience and help others find us:
+        </p>
+        <div className="mt-3 flex flex-wrap gap-2">
+          <a
+            href={site.socials.googleReview}
+            target="_blank"
+            rel="noreferrer"
+            className="btn btn-primary !min-h-0 !px-4 !py-2 !text-xs"
+          >
+            Leave a Google review
+          </a>
+          <a
+            href={site.socials.googleMaps}
+            target="_blank"
+            rel="noreferrer"
+            className="btn btn-secondary !min-h-0 !px-4 !py-2 !text-xs"
+          >
+            See us on Google Maps
+          </a>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => {
+            setStatus("idle");
+            setReference(null);
+            setCalendarEvent(null);
+          }}
+          className="mt-6 text-xs font-medium text-gold-600 hover:text-gold-700"
+        >
+          ← Book another appointment
+        </button>
+      </div>
+    );
   }
 
   return (
@@ -142,36 +260,6 @@ export function BookingForm({ services, initialServiceSlug }: Props) {
       >
         {status === "submitting" ? "Submitting…" : "Request appointment"}
       </button>
-
-      {status === "success" ? (
-        <div className="mt-4 rounded-2xl bg-blush-100 px-4 py-4 text-sm text-ink-700">
-          <p>
-            Booking received{reference ? ` — your reference is ${reference}.` : "."} We’ll confirm shortly via email.
-          </p>
-          <p className="mt-3">
-            Already a returning client? Share your experience and help others
-            find us:
-          </p>
-          <div className="mt-3 flex flex-wrap gap-2">
-            <a
-              href={site.socials.googleReview}
-              target="_blank"
-              rel="noreferrer"
-              className="btn btn-primary !min-h-0 !px-4 !py-2 !text-xs"
-            >
-              Leave a Google review
-            </a>
-            <a
-              href={site.socials.googleMaps}
-              target="_blank"
-              rel="noreferrer"
-              className="btn btn-secondary !min-h-0 !px-4 !py-2 !text-xs"
-            >
-              See us on Google Maps
-            </a>
-          </div>
-        </div>
-      ) : null}
 
       {status === "error" ? (
         <p className="mt-4 rounded-2xl bg-red-50 px-4 py-3 text-sm text-red-700">
