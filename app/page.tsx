@@ -183,9 +183,24 @@ export default async function Home() {
           />
 
           {services.data.length === 0 ? (
-            <p className="mt-10 text-center text-sm text-ink-500">
-              Connect the Laravel API and seed the database to see services here.
-            </p>
+            <div className="mx-auto mt-12 max-w-md rounded-3xl border border-nude-100 bg-white/70 p-8 text-center shadow-sm">
+              <div className="text-3xl" aria-hidden>✨</div>
+              <p className="mt-3 font-display text-xl text-ink-900">
+                Our treatment menu is being updated
+              </p>
+              <p className="mt-2 text-sm leading-relaxed text-ink-500">
+                We&apos;re refreshing our services — please check back soon, or
+                message us and we&apos;ll gladly help you book.
+              </p>
+              <div className="mt-5 flex flex-wrap justify-center gap-3">
+                <Link href="/contact" className="btn btn-primary">
+                  Message us
+                </Link>
+                <Link href="/book" className="btn btn-secondary">
+                  Book an appointment
+                </Link>
+              </div>
+            </div>
           ) : (
             <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {services.data.map((service) => (

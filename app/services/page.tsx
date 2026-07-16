@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { getServices, getServiceCategories } from "@/lib/content";
 import { ServiceCard } from "@/components/ServiceCard";
 import { SectionHeading } from "@/components/SectionHeading";
@@ -63,10 +64,24 @@ export default async function ServicesPage() {
           ) : null}
 
           {services.data.length === 0 ? (
-            <p className="mt-12 text-center text-sm text-ink-500">
-              Once the API is connected and the database is seeded, services
-              will appear here.
-            </p>
+            <div className="mx-auto mt-12 max-w-md rounded-3xl border border-nude-100 bg-white/70 p-8 text-center shadow-sm">
+              <div className="text-3xl" aria-hidden>✨</div>
+              <p className="mt-3 font-display text-xl text-ink-900">
+                Our treatment menu is being updated
+              </p>
+              <p className="mt-2 text-sm leading-relaxed text-ink-500">
+                We&apos;re refreshing our services — please check back soon. In the
+                meantime, message us and we&apos;ll gladly help you book.
+              </p>
+              <div className="mt-5 flex flex-wrap justify-center gap-3">
+                <Link href="/contact" className="btn btn-primary">
+                  Message us
+                </Link>
+                <Link href="/book" className="btn btn-secondary">
+                  Book an appointment
+                </Link>
+              </div>
+            </div>
           ) : (
             <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {services.data.map((s) => (
