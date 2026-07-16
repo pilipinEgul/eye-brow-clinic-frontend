@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { staticFaqs } from "@/lib/static-content";
-import { getFeaturedServices } from "@/lib/content";
+import { getFeaturedServices, getFaqs } from "@/lib/content";
 import { ServiceCard } from "@/components/ServiceCard";
 import { GoogleReviews } from "@/components/GoogleReviews";
 import { ReviewLinks } from "@/components/ReviewLinks";
@@ -42,7 +41,7 @@ const whyPoints = [
 
 export default async function Home() {
   const services = { data: await getFeaturedServices(6) };
-  const faqs = { data: staticFaqs.filter((f) => f.service_id === null) };
+  const faqs = { data: await getFaqs({ general: true }) };
 
   return (
     <>

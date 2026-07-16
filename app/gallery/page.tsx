@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { staticGallery } from "@/lib/static-content";
+import { getGallery } from "@/lib/content";
 import { getFacebookPhotos } from "@/lib/facebook-photos";
 import { SectionHeading } from "@/components/SectionHeading";
 
@@ -14,7 +14,7 @@ export default async function GalleryPage() {
   // Live Facebook Page photos (empty unless FACEBOOK_PAGE_ACCESS_TOKEN is set),
   // shown alongside the built-in studio photos.
   const facebookPhotos = await getFacebookPhotos();
-  const images = [...staticGallery, ...facebookPhotos];
+  const images = [...(await getGallery()), ...facebookPhotos];
 
   const categories = Array.from(
     new Set(images.map((i) => i.category).filter((c): c is string => Boolean(c))),

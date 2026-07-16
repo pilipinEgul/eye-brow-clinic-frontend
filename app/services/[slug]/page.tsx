@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { staticFaqs, staticServices } from "@/lib/static-content";
-import { getService } from "@/lib/content";
+import { getService, getServices, getFaqs } from "@/lib/content";
 import { SectionHeading } from "@/components/SectionHeading";
 import { FaqList } from "@/components/FaqList";
 import { ReviewLinks } from "@/components/ReviewLinks";
@@ -15,8 +14,9 @@ export const revalidate = 300;
 
 type PageProps = { params: Promise<{ slug: string }> };
 
-export function generateStaticParams() {
-  return staticServices.map((s) => ({ slug: s.slug }));
+export async function generateStaticParams() {
+  const services = await getServices();
+  return services.map((s) => ({ slug: s.slug }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -54,7 +54,7 @@ export default async function ServiceDetailPage({ params }: PageProps) {
   const service = await getService(slug);
   if (!service) notFound();
 
-  const serviceFaqs = staticFaqs.filter((f) => f.service_id === service.id);
+  const serviceFaqs = await getFaqs({ service_id: service.id });
 
   const price = peso(service.promo_price ?? service.price);
   const originalPrice = service.promo_price ? peso(service.price) : null;

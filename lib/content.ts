@@ -1,16 +1,21 @@
-import { api, type Service, type ServiceCategory } from "@/lib/api";
-import { staticServices, staticCategories } from "@/lib/static-content";
+import {
+  api,
+  type Faq,
+  type GalleryImage,
+  type Service,
+  type ServiceCategory,
+} from "@/lib/api";
 
 /**
- * Service/category reads for the public site. These pull from the live backend
- * (so the admin dashboard can manage them) and fall back to the built-in static
- * catalog if the API is unreachable or returns nothing — the site never renders
- * an empty services section.
+ * Content reads for the public site — fully driven by the live backend/admin.
+ * If the API is unreachable, `api.*` already resolves to an empty collection
+ * (see `safe()` in lib/api.ts), so callers get [] and render an empty state.
+ * There is intentionally no static/hardcoded fallback catalog.
  */
 
 export async function getServices(): Promise<Service[]> {
   const { data } = await api.services({ per_page: 48 });
-  return data.length > 0 ? data : staticServices;
+  return data;
 }
 
 export async function getFeaturedServices(limit = 6): Promise<Service[]> {
@@ -21,11 +26,22 @@ export async function getFeaturedServices(limit = 6): Promise<Service[]> {
 
 export async function getService(slug: string): Promise<Service | null> {
   const { data } = await api.service(slug);
-  if (data) return data;
-  return staticServices.find((s) => s.slug === slug) ?? null;
+  return data ?? null;
 }
 
 export async function getServiceCategories(): Promise<ServiceCategory[]> {
   const { data } = await api.serviceCategories();
-  return data.length > 0 ? data : staticCategories;
+  return data;
+}
+
+export async function getFaqs(
+  params: { service_id?: number; general?: boolean } = {},
+): Promise<Faq[]> {
+  const { data } = await api.faqs(params);
+  return data;
+}
+
+export async function getGallery(): Promise<GalleryImage[]> {
+  const { data } = await api.gallery({ per_page: 60 });
+  return data;
 }
