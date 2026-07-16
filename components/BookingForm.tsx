@@ -111,7 +111,10 @@ export function BookingForm({ services, initialServiceSlug }: Props) {
   if (status === "success") {
     return (
       <div className="rounded-3xl border border-nude-100 bg-white p-8 shadow-sm">
-        <div className="font-display text-2xl text-ink-900">You’re booked in ✨</div>
+        <div className="flex items-center gap-2 font-display text-2xl text-ink-900">
+          You’re booked in
+          <i className="pi pi-sparkles text-gold-500 text-xl" aria-hidden />
+        </div>
         <p className="mt-3 text-sm text-ink-700">
           Booking received{reference ? ` — your reference is ${reference}.` : "."} We’ll confirm shortly via email.
         </p>
@@ -178,9 +181,10 @@ export function BookingForm({ services, initialServiceSlug }: Props) {
             setReference(null);
             setCalendarEvent(null);
           }}
-          className="mt-6 text-xs font-medium text-gold-600 hover:text-gold-700"
+          className="mt-6 inline-flex items-center gap-1.5 text-xs font-medium text-gold-600 hover:text-gold-700"
         >
-          ← Book another appointment
+          <i className="pi pi-arrow-left text-[0.7rem]" aria-hidden />
+          Book another appointment
         </button>
       </div>
     );

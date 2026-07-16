@@ -13,6 +13,34 @@ export type ApiCollection<T> = {
 
 export type ApiResource<T> = { data: T };
 
+/** Admin-editable business info overrides (all optional; null = never customised). */
+export type SiteSettingsData = {
+  name?: string | null;
+  shortName?: string | null;
+  tagline?: string | null;
+  description?: string | null;
+  address?: Partial<{
+    street: string;
+    city: string;
+    region: string;
+    country: string;
+    postalCode: string;
+  }> | null;
+  contact?: Partial<{
+    phone: string;
+    phoneTel: string;
+    landline: string;
+    landlineTel: string;
+    email: string;
+    bookingHours: string;
+  }> | null;
+  socials?: Partial<{
+    facebook: string;
+    instagram: string;
+    googleMaps: string;
+  }> | null;
+} | null;
+
 export type ServiceCategory = {
   id: number;
   name: string;
@@ -189,6 +217,12 @@ const EMPTY_COLLECTION = <T,>(): ApiCollection<T> => ({ data: [] });
 export const api = {
   serviceCategories: () =>
     safe(apiFetch<ApiCollection<ServiceCategory>>("/service-categories"), EMPTY_COLLECTION()),
+
+  siteSettings: () =>
+    safe(
+      apiFetch<ApiResource<SiteSettingsData>>("/site-settings", { revalidate: 60 }),
+      { data: null },
+    ),
 
   services: (params: { featured?: boolean; category?: string; per_page?: number } = {}) => {
     const search = new URLSearchParams();

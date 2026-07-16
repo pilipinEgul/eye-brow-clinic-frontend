@@ -6,7 +6,17 @@ import { Bool } from "@/components/admin/Bool";
 
 const columns: Column[] = [
   { key: "client_name", label: "Client" },
-  { key: "rating", label: "Rating", render: (r) => "★".repeat(Number(r.rating) || 0) },
+  {
+    key: "rating",
+    label: "Rating",
+    render: (r) => (
+      <span className="inline-flex gap-0.5 text-gold-500">
+        {Array.from({ length: Number(r.rating) || 0 }).map((_, i) => (
+          <i key={i} className="pi pi-star-fill text-xs" aria-hidden />
+        ))}
+      </span>
+    ),
+  },
   {
     key: "quote",
     label: "Quote",

@@ -3,9 +3,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { nav, site } from "@/lib/site";
+import { nav } from "@/lib/site";
+import type { SiteSettings } from "@/lib/site-settings";
 
-export function Header() {
+export function Header({ settings }: { settings: SiteSettings }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -39,7 +40,7 @@ export function Header() {
         <Link href="/" className="flex items-center gap-3" onClick={() => setOpen(false)}>
           <Image
             src="/images/logo.jpg"
-            alt={`${site.name} logo`}
+            alt={`${settings.name} logo`}
             width={40}
             height={40}
             priority
@@ -47,7 +48,7 @@ export function Header() {
           />
           <div className="flex flex-col leading-tight">
             <span className="font-display text-xl tracking-tight text-ink-900 sm:text-2xl">
-              {site.shortName}
+              {settings.shortName}
             </span>
             <span className="hidden text-[10px] uppercase tracking-[0.32em] text-terracotta-500 sm:inline">
               Aesthetics · Imus
@@ -126,9 +127,7 @@ export function Header() {
                 className="group flex items-center justify-between rounded-2xl px-4 py-3 text-base text-ink-900 transition hover:bg-blush-50"
               >
                 <span>{item.label}</span>
-                <span className="text-terracotta-400 opacity-0 transition group-hover:translate-x-1 group-hover:opacity-100">
-                  →
-                </span>
+                <i className="pi pi-arrow-right text-xs text-terracotta-400 opacity-0 transition group-hover:translate-x-1 group-hover:opacity-100" aria-hidden />
               </Link>
             ))}
             <Link
@@ -139,15 +138,17 @@ export function Header() {
               Book Appointment
             </Link>
             <div className="mt-4 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 border-t border-nude-100 pt-4 text-xs text-ink-500">
-              <a href={`tel:${site.contact.landlineTel}`} className="hover:text-terracotta-500">
-                ☎ {site.contact.landline}
+              <a href={`tel:${settings.contact.landlineTel}`} className="inline-flex items-center gap-1.5 hover:text-terracotta-500">
+                <i className="pi pi-phone text-[0.7rem]" aria-hidden />
+                {settings.contact.landline}
               </a>
               <span aria-hidden>·</span>
-              <a href={`tel:${site.contact.phoneTel}`} className="hover:text-terracotta-500">
-                📱 {site.contact.phone}
+              <a href={`tel:${settings.contact.phoneTel}`} className="inline-flex items-center gap-1.5 hover:text-terracotta-500">
+                <i className="pi pi-mobile text-[0.7rem]" aria-hidden />
+                {settings.contact.phone}
               </a>
               <span aria-hidden>·</span>
-              <span>{site.contact.bookingHours}</span>
+              <span>{settings.contact.bookingHours}</span>
             </div>
           </div>
         </div>

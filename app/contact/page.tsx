@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ContactForm } from "@/components/ContactForm";
 import { site } from "@/lib/site";
+import { getSiteSettings } from "@/lib/site-settings";
 
 export const metadata: Metadata = {
   title: "Contact — Emcey Brows Aesthetics in Imus, Cavite",
@@ -8,7 +9,9 @@ export const metadata: Metadata = {
     "Reach Emcey Brows Aesthetics by phone, email or Facebook Messenger. Visit our studio in Imus, Cavite.",
 };
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const settings = await getSiteSettings();
+
   return (
     <section className="section">
       <div className="container-x grid gap-12 lg:grid-cols-2">
@@ -27,44 +30,46 @@ export default function ContactPage() {
             <div>
               <dt className="eyebrow">Address</dt>
               <dd className="mt-1 text-ink-700">
-                {site.address.street}
+                {settings.address.street}
                 <br />
-                {site.address.city}, {site.address.region} {site.address.postalCode}
+                {settings.address.city}, {settings.address.region} {settings.address.postalCode}
                 <br />
-                {site.address.country}
+                {settings.address.country}
               </dd>
             </div>
             <div>
               <dt className="eyebrow">Phone</dt>
               <dd className="mt-1 space-y-1">
-                <a className="block text-ink-700 hover:text-gold-600" href={`tel:${site.contact.landlineTel}`}>
-                  ☎ {site.contact.landline}
+                <a className="flex items-center gap-2 text-ink-700 hover:text-gold-600" href={`tel:${settings.contact.landlineTel}`}>
+                  <i className="pi pi-phone text-xs" aria-hidden />
+                  {settings.contact.landline}
                 </a>
-                <a className="block text-ink-700 hover:text-gold-600" href={`tel:${site.contact.phoneTel}`}>
-                  📱 {site.contact.phone}
+                <a className="flex items-center gap-2 text-ink-700 hover:text-gold-600" href={`tel:${settings.contact.phoneTel}`}>
+                  <i className="pi pi-mobile text-xs" aria-hidden />
+                  {settings.contact.phone}
                 </a>
               </dd>
             </div>
             <div>
               <dt className="eyebrow">Email</dt>
               <dd className="mt-1">
-                <a className="text-ink-700 hover:text-gold-600" href={`mailto:${site.contact.email}`}>
-                  {site.contact.email}
+                <a className="text-ink-700 hover:text-gold-600" href={`mailto:${settings.contact.email}`}>
+                  {settings.contact.email}
                 </a>
               </dd>
             </div>
             <div>
               <dt className="eyebrow">Studio Hours</dt>
-              <dd className="mt-1 text-ink-700">{site.contact.bookingHours}</dd>
+              <dd className="mt-1 text-ink-700">{settings.contact.bookingHours}</dd>
             </div>
           </dl>
 
           <div className="mt-8 flex flex-wrap gap-3">
-            <a href={site.socials.facebook} target="_blank" rel="noreferrer" className="btn btn-secondary">
+            <a href={settings.socials.facebook} target="_blank" rel="noreferrer" className="btn btn-secondary">
               Message on Facebook
             </a>
             <a
-              href={site.socials.googleMaps}
+              href={settings.socials.googleMaps}
               target="_blank"
               rel="noreferrer"
               className="btn btn-secondary"

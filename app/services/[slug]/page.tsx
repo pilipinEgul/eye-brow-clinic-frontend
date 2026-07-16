@@ -128,7 +128,8 @@ export default async function ServiceDetailPage({ params }: PageProps) {
                 Book this treatment
               </Link>
               <Link href="/services" className="btn btn-secondary">
-                ← Back to services
+                <i className="pi pi-arrow-left text-xs" aria-hidden />
+                Back to services
               </Link>
             </div>
           </div>
@@ -243,8 +244,8 @@ export default async function ServiceDetailPage({ params }: PageProps) {
                 <div className="eyebrow">Benefits</div>
                 <ul className="mt-4 space-y-2 text-sm text-ink-700">
                   {service.benefits.map((b) => (
-                    <li key={b} className="flex gap-2">
-                      <span className="text-gold-500">✦</span>
+                    <li key={b} className="flex items-start gap-2">
+                      <i className="pi pi-check mt-0.5 text-gold-500" aria-hidden />
                       {b}
                     </li>
                   ))}
@@ -271,8 +272,8 @@ export default async function ServiceDetailPage({ params }: PageProps) {
                 <div className="eyebrow">Aftercare</div>
                 <ul className="mt-4 space-y-2 text-sm text-ink-700">
                   {service.aftercare.map((a) => (
-                    <li key={a} className="flex gap-2">
-                      <span className="text-gold-500">·</span>
+                    <li key={a} className="flex items-start gap-2">
+                      <i className="pi pi-check mt-0.5 text-gold-500" aria-hidden />
                       {a}
                     </li>
                   ))}

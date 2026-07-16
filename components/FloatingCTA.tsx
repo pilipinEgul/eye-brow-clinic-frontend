@@ -4,54 +4,19 @@ import Link from "next/link";
 import { site } from "@/lib/site";
 
 function IconPhone() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path
-        d="M5 4c0-.6.4-1 1-1h2.5c.5 0 .9.3 1 .8l1 4c.1.5-.1.9-.5 1.2L8.5 10c1 2.4 2.6 4 5 5l1-1.5c.3-.4.7-.6 1.2-.5l4 1c.5.1.8.5.8 1V18c0 .6-.4 1-1 1-9 0-15-6-15-15Z"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
+  return <i className="pi pi-phone text-base" aria-hidden />;
 }
 
 function IconChat() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path
-        d="M4 12c0-4.4 3.6-8 8-8s8 3.6 8 8-3.6 8-8 8c-1.2 0-2.4-.3-3.4-.7L4 20l1.2-3.6C4.4 15 4 13.6 4 12Z"
-        stroke="currentColor"
-        strokeWidth="1.6"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
+  return <i className="pi pi-facebook text-base" aria-hidden />;
 }
 
 function IconStar() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-      <path d="m12 2.5 2.95 5.98 6.6.96-4.78 4.66 1.13 6.57L12 17.55l-5.9 3.12 1.13-6.57L2.45 9.44l6.6-.96L12 2.5Z" />
-    </svg>
-  );
+  return <i className="pi pi-star-fill text-base" aria-hidden />;
 }
 
 function IconCal() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <rect
-        x="3.5"
-        y="5.5"
-        width="17"
-        height="14"
-        rx="2.5"
-        stroke="currentColor"
-        strokeWidth="1.6"
-      />
-      <path d="M3.5 10h17M8 3.5v4M16 3.5v4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-    </svg>
-  );
+  return <i className="pi pi-calendar text-base" aria-hidden />;
 }
 
 export function FloatingCTA() {

@@ -1,9 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import { nav, site } from "@/lib/site";
+import { nav } from "@/lib/site";
 import { areas } from "@/lib/areas";
+import type { SiteSettings } from "@/lib/site-settings";
 
-export function Footer() {
+export function Footer({ settings }: { settings: SiteSettings }) {
   return (
     <footer className="relative mt-24 overflow-hidden border-t border-nude-100 bg-gradient-to-b from-cream-50 to-blush-50">
       <div
@@ -20,22 +21,22 @@ export function Footer() {
           <Link href="/" className="inline-flex items-center gap-3">
             <Image
               src="/images/logo.jpg"
-              alt={`${site.name} logo`}
+              alt={`${settings.name} logo`}
               width={44}
               height={44}
               className="h-11 w-11 rounded-full object-cover shadow-soft"
             />
-            <span className="font-display text-3xl text-ink-900">{site.name}</span>
+            <span className="font-display text-3xl text-ink-900">{settings.name}</span>
           </Link>
           <p className="mt-5 max-w-md text-sm leading-relaxed text-ink-500">
-            {site.description}
+            {settings.description}
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link href="/book" className="btn btn-primary">
               Book Appointment
             </Link>
             <a
-              href={site.socials.facebook}
+              href={settings.socials.facebook}
               target="_blank"
               rel="noreferrer"
               className="btn btn-secondary"
@@ -64,39 +65,41 @@ export function Footer() {
         <div>
           <div className="eyebrow">Visit Us</div>
           <ul className="mt-4 space-y-2.5 text-sm text-ink-700">
-            <li>{site.address.street}</li>
+            <li>{settings.address.street}</li>
             <li>
-              {site.address.city}, {site.address.region} {site.address.postalCode}
+              {settings.address.city}, {settings.address.region} {settings.address.postalCode}
             </li>
-            <li>{site.address.country}</li>
+            <li>{settings.address.country}</li>
             <li>
               <a
-                href={`tel:${site.contact.landlineTel}`}
-                className="hover:text-terracotta-500"
+                href={`tel:${settings.contact.landlineTel}`}
+                className="inline-flex items-center gap-2 hover:text-terracotta-500"
               >
-                ☎ {site.contact.landline}
+                <i className="pi pi-phone text-xs" aria-hidden />
+                {settings.contact.landline}
               </a>
             </li>
             <li>
               <a
-                href={`tel:${site.contact.phoneTel}`}
-                className="hover:text-terracotta-500"
+                href={`tel:${settings.contact.phoneTel}`}
+                className="inline-flex items-center gap-2 hover:text-terracotta-500"
               >
-                📱 {site.contact.phone}
+                <i className="pi pi-mobile text-xs" aria-hidden />
+                {settings.contact.phone}
               </a>
             </li>
             <li>
               <a
-                href={`mailto:${site.contact.email}`}
+                href={`mailto:${settings.contact.email}`}
                 className="hover:text-terracotta-500"
               >
-                {site.contact.email}
+                {settings.contact.email}
               </a>
             </li>
-            <li className="text-ink-500">{site.contact.bookingHours}</li>
+            <li className="text-ink-500">{settings.contact.bookingHours}</li>
             <li>
               <a
-                href={site.socials.googleMaps}
+                href={settings.socials.googleMaps}
                 target="_blank"
                 rel="noreferrer"
                 className="hover:text-terracotta-500"
@@ -134,9 +137,9 @@ export function Footer() {
       <div className="relative border-t border-nude-100 py-6">
         <div className="container-x flex flex-col items-center justify-between gap-2 text-xs text-ink-500 sm:flex-row">
           <p>
-            © {new Date().getFullYear()} {site.name}. All rights reserved.
+            © {new Date().getFullYear()} {settings.name}. All rights reserved.
           </p>
-          <p>Designed with love in {site.address.region}.</p>
+          <p>Designed with love in {settings.address.region}.</p>
         </div>
       </div>
     </footer>

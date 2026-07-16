@@ -1,9 +1,11 @@
 import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Inter } from "next/font/google";
 import "./globals.css";
+import "primeicons/primeicons.css";
 import { SiteShell } from "@/components/SiteShell";
 import { JsonLd } from "@/components/JsonLd";
 import { ToastProvider } from "@/lib/toast";
+import { getSiteSettings } from "@/lib/site-settings";
 import { localBusinessSchema } from "@/lib/schemas";
 import { site } from "@/lib/site";
 
@@ -69,9 +71,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const siteSettings = await getSiteSettings();
+
   return (
     <html
       lang="en"
@@ -79,7 +83,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-cream-100 text-ink-900">
         <ToastProvider>
-          <SiteShell>{children}</SiteShell>
+          <SiteShell settings={siteSettings}>{children}</SiteShell>
         </ToastProvider>
         <JsonLd data={localBusinessSchema()} />
       </body>

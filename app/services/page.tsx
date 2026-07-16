@@ -65,7 +65,7 @@ export default async function ServicesPage() {
 
           {services.data.length === 0 ? (
             <div className="mx-auto mt-12 max-w-md rounded-3xl border border-nude-100 bg-white/70 p-8 text-center shadow-sm">
-              <div className="text-3xl" aria-hidden>✨</div>
+              <i className="pi pi-sparkles text-3xl text-gold-500" aria-hidden />
               <p className="mt-3 font-display text-xl text-ink-900">
                 Our treatment menu is being updated
               </p>

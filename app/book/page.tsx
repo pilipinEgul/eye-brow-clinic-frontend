@@ -30,16 +30,16 @@ export default async function BookPage({ searchParams }: PageProps) {
           />
 
           <ul className="mt-8 space-y-3 text-sm text-ink-700">
-            <li className="flex gap-3">
-              <span className="text-gold-500">✦</span>
+            <li className="flex items-start gap-3">
+              <i className="pi pi-check mt-0.5 text-gold-500" aria-hidden />
               Confirmation via email and SMS within studio hours.
             </li>
-            <li className="flex gap-3">
-              <span className="text-gold-500">✦</span>
+            <li className="flex items-start gap-3">
+              <i className="pi pi-check mt-0.5 text-gold-500" aria-hidden />
               Reschedule or cancel up to 24 hours before your appointment.
             </li>
-            <li className="flex gap-3">
-              <span className="text-gold-500">✦</span>
+            <li className="flex items-start gap-3">
+              <i className="pi pi-check mt-0.5 text-gold-500" aria-hidden />
               GCash, Maya, PayMongo and cash all accepted in-studio.
             </li>
           </ul>

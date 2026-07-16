@@ -10,9 +10,7 @@ function Stars({ rating }: { rating: number }) {
       className="flex gap-0.5 text-gold-500"
     >
       {Array.from({ length: 5 }).map((_, i) => (
-        <span key={i} aria-hidden>
-          {i < rounded ? "★" : "☆"}
-        </span>
+        <i key={i} className={`pi ${i < rounded ? "pi-star-fill" : "pi-star"} text-xs`} aria-hidden />
       ))}
     </div>
   );

@@ -146,9 +146,10 @@ export default function AdminAppointmentsPage() {
                       href={a.google_event_link}
                       target="_blank"
                       rel="noreferrer"
-                      className="mt-1 block text-xs text-gold-600 hover:text-gold-700"
+                      className="mt-1 inline-flex items-center gap-1 text-xs text-gold-600 hover:text-gold-700"
                     >
-                      Calendar ↗
+                      Calendar
+                      <i className="pi pi-external-link text-[0.65rem]" aria-hidden />
                     </a>
                   ) : null}
                 </td>

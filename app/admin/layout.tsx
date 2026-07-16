@@ -10,6 +10,7 @@ const NAV = [
   { href: "/admin", label: "Dashboard" },
   { href: "/admin/appointments", label: "Appointments" },
   { href: "/admin/schedule", label: "Schedule" },
+  { href: "/admin/site-settings", label: "Business Info" },
   { href: "/admin/closures", label: "Closures & Holidays" },
   { href: "/admin/services", label: "Services" },
   { href: "/admin/service-categories", label: "Categories" },

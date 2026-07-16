@@ -82,7 +82,7 @@ export function ServiceCard({ service }: { service: Service }) {
 
           <span className="flex items-center gap-1 text-sm font-medium text-terracotta-500 transition group-hover:gap-2">
             View
-            <span aria-hidden>→</span>
+            <i className="pi pi-arrow-right text-xs" aria-hidden />
           </span>
         </div>
       </div>

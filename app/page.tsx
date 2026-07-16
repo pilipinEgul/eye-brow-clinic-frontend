@@ -11,29 +11,29 @@ import { site } from "@/lib/site";
 export const revalidate = 300;
 
 const trustBadges = [
-  { icon: "★", label: "5.0 Google reviews" },
-  { icon: "✦", label: "Medical-grade hygiene" },
-  { icon: "♡", label: "Vegan pigments" },
+  { icon: "pi-star-fill", label: "5.0 Google reviews" },
+  { icon: "pi-shield", label: "Medical-grade hygiene" },
+  { icon: "pi-heart", label: "Vegan pigments" },
 ];
 
 const whyPoints = [
   {
-    icon: "✎",
+    icon: "pi-pencil",
     title: "Certified artistry",
     body: "Trained in semi-permanent makeup, laser and aesthetic facials.",
   },
   {
-    icon: "✦",
+    icon: "pi-verified",
     title: "Premium pigments",
     body: "Vegan, hypoallergenic, ophthalmologist tested.",
   },
   {
-    icon: "✚",
+    icon: "pi-shield",
     title: "Medical-grade hygiene",
     body: "Single-use needles and full sterilisation.",
   },
   {
-    icon: "₱",
+    icon: "pi-money-bill",
     title: "Honest pricing",
     body: "Transparent rates, GCash, Maya, Visa, Mastercard, & QRPh friendly.",
   },
@@ -85,7 +85,7 @@ export default async function Home() {
             <div className="mt-8 flex flex-wrap gap-3">
               <Link href="/book" className="btn btn-primary">
                 Book Appointment
-                <span aria-hidden>→</span>
+                <i className="pi pi-arrow-right text-xs" aria-hidden />
               </Link>
               <Link href="/services" className="btn btn-secondary">
                 View Services
@@ -95,9 +95,7 @@ export default async function Home() {
             <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 text-xs uppercase tracking-[0.28em] text-ink-500">
               {trustBadges.map((b) => (
                 <span key={b.label} className="flex items-center gap-2">
-                  <span className="text-terracotta-500" aria-hidden>
-                    {b.icon}
-                  </span>
+                  <i className={`pi ${b.icon} text-terracotta-500`} aria-hidden />
                   {b.label}
                 </span>
               ))}
@@ -162,7 +160,9 @@ export default async function Home() {
                 </div>
                 <div className="h-10 w-px bg-nude-200" />
                 <div>
-                  <div className="font-display text-2xl text-ink-900">5.0★</div>
+                  <div className="flex items-center gap-1 font-display text-2xl text-ink-900">
+                    5.0<i className="pi pi-star-fill text-base text-gold-500" aria-hidden />
+                  </div>
                   <div className="text-[10px] uppercase tracking-[0.3em] text-ink-500">
                     Avg rating
                   </div>
@@ -184,7 +184,7 @@ export default async function Home() {
 
           {services.data.length === 0 ? (
             <div className="mx-auto mt-12 max-w-md rounded-3xl border border-nude-100 bg-white/70 p-8 text-center shadow-sm">
-              <div className="text-3xl" aria-hidden>✨</div>
+              <i className="pi pi-sparkles text-3xl text-gold-500" aria-hidden />
               <p className="mt-3 font-display text-xl text-ink-900">
                 Our treatment menu is being updated
               </p>
@@ -212,7 +212,7 @@ export default async function Home() {
           <div className="mt-12 text-center">
             <Link href="/services" className="btn btn-secondary">
               See all services
-              <span aria-hidden>→</span>
+              <i className="pi pi-arrow-right text-xs" aria-hidden />
             </Link>
           </div>
         </div>
@@ -234,7 +234,7 @@ export default async function Home() {
                 className="group rounded-3xl border border-nude-100 bg-white/80 p-6 shadow-soft transition hover:-translate-y-1 hover:border-terracotta-400/40 hover:shadow-warm"
               >
                 <div className="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-blush-100 to-nude-100 text-terracotta-500 transition group-hover:scale-110">
-                  <span className="text-lg" aria-hidden>{f.icon}</span>
+                  <i className={`pi ${f.icon} text-lg`} aria-hidden />
                 </div>
                 <div className="mt-4 font-display text-xl text-ink-900">{f.title}</div>
                 <p className="mt-2 text-sm leading-relaxed text-ink-500">{f.body}</p>
@@ -279,7 +279,7 @@ export default async function Home() {
             <div className="mt-7 flex flex-wrap gap-3">
               <Link href="/gallery" className="btn btn-secondary">
                 See more transformations
-                <span aria-hidden>→</span>
+                <i className="pi pi-arrow-right text-xs" aria-hidden />
               </Link>
               <Link href="/book" className="btn btn-primary">
                 Book your shape mapping
@@ -315,7 +315,7 @@ export default async function Home() {
             <div className="mt-7 flex flex-wrap gap-3">
               <Link href="/about" className="btn btn-secondary">
                 Meet the studio
-                <span aria-hidden>→</span>
+                <i className="pi pi-arrow-right text-xs" aria-hidden />
               </Link>
               <Link href="/book" className="btn btn-primary">
                 Book a session

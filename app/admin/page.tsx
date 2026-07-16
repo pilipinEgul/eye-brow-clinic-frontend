@@ -36,8 +36,9 @@ export default function AdminDashboardPage() {
           <div className="mt-8 rounded-3xl border border-nude-100 bg-white p-6 shadow-sm">
             <div className="flex items-center justify-between">
               <h2 className="font-display text-xl">Recent bookings</h2>
-              <Link href="/admin/appointments" className="text-sm text-gold-600 hover:text-gold-700">
-                View all →
+              <Link href="/admin/appointments" className="inline-flex items-center gap-1 text-sm text-gold-600 hover:text-gold-700">
+                View all
+                <i className="pi pi-arrow-right text-xs" aria-hidden />
               </Link>
             </div>
             <div className="mt-4 overflow-x-auto">

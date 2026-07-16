@@ -1,3 +1,5 @@
+import type { SiteSettingsData } from "@/lib/api";
+
 const API_BASE =
   process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000/api/v1";
 
@@ -135,6 +137,14 @@ export const adminApi = {
   getSettings: () => request<{ data: BookingSettings }>("/settings"),
   updateSettings: (data: BookingSettings) =>
     request<{ data: BookingSettings }>("/settings", {
+      method: "PUT",
+      body: JSON.stringify(data),
+    }),
+
+  // Business info (name, address, contact, socials)
+  getSiteSettings: () => request<{ data: SiteSettingsData }>("/site-settings"),
+  updateSiteSettings: (data: SiteSettingsData) =>
+    request<{ data: SiteSettingsData }>("/site-settings", {
       method: "PUT",
       body: JSON.stringify(data),
     }),

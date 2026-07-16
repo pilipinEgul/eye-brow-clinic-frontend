@@ -40,7 +40,7 @@ export default function AreasPage() {
               </p>
               <span className="mt-5 flex items-center gap-1 text-sm font-medium text-terracotta-500 transition group-hover:gap-2">
                 View {a.name}
-                <span aria-hidden>→</span>
+                <i className="pi pi-arrow-right text-xs" aria-hidden />
               </span>
             </Link>
           ))}

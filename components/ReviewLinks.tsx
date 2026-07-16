@@ -30,7 +30,8 @@ export function ReviewLinks({ className = "" }: { className?: string }) {
               rel="noreferrer"
               className="btn btn-secondary"
             >
-              ★ Read Google reviews
+              <i className="pi pi-star-fill text-xs" aria-hidden />
+              Read Google reviews
             </a>
             <a
               href={site.socials.googleReview}
