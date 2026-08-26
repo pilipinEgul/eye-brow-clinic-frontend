@@ -24,6 +24,9 @@ export const site = {
   },
   socials: {
     facebook: process.env.NEXT_PUBLIC_FACEBOOK_URL || "https://www.facebook.com/",
+    // Direct Messenger deep link (m.me). Override with NEXT_PUBLIC_MESSENGER_URL;
+    // defaults to the Emcey Brows page id.
+    messenger: process.env.NEXT_PUBLIC_MESSENGER_URL || "https://m.me/100083228167264",
     // Public "Reviews" / "Recommendations" tab of the Facebook Page.
     facebookReviews:
       process.env.NEXT_PUBLIC_FACEBOOK_REVIEWS_URL ||
@@ -66,6 +69,7 @@ export const nav = {
     { label: "Services", href: "/services" },
     { label: "Gallery", href: "/gallery" },
     { label: "Testimonials", href: "/testimonials" },
+    { label: "Announcements", href: "/announcements" },
     { label: "Contact", href: "/contact" },
     { label: "Track booking", href: "/track" },
   ],

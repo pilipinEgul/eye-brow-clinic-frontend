@@ -1,12 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getFeaturedServices, getFaqs } from "@/lib/content";
+import { getFeaturedServices, getFaqs, getAnnouncements, getPromos, getHeroImages } from "@/lib/content";
 import { ServiceCard } from "@/components/ServiceCard";
+import { UpdatesSection } from "@/components/UpdatesSection";
 import { GoogleReviews } from "@/components/GoogleReviews";
 import { ReviewLinks } from "@/components/ReviewLinks";
 import { SectionHeading } from "@/components/SectionHeading";
 import { FaqList } from "@/components/FaqList";
 import { site } from "@/lib/site";
+import { getPageContent } from "@/lib/page-content";
 
 export const revalidate = 300;
 
@@ -16,32 +18,23 @@ const trustBadges = [
   { icon: "pi-heart", label: "Vegan pigments" },
 ];
 
-const whyPoints = [
-  {
-    icon: "pi-pencil",
-    title: "Certified artistry",
-    body: "Trained in semi-permanent makeup, laser and aesthetic facials.",
-  },
-  {
-    icon: "pi-verified",
-    title: "Premium pigments",
-    body: "Vegan, hypoallergenic, ophthalmologist tested.",
-  },
-  {
-    icon: "pi-shield",
-    title: "Medical-grade hygiene",
-    body: "Single-use needles and full sterilisation.",
-  },
-  {
-    icon: "pi-money-bill",
-    title: "Honest pricing",
-    body: "Transparent rates, GCash, Maya, Visa, Mastercard, & QRPh friendly.",
-  },
-];
+const whyIcons = ["pi-pencil", "pi-verified", "pi-shield", "pi-money-bill"];
 
 export default async function Home() {
   const services = { data: await getFeaturedServices(6) };
   const faqs = { data: await getFaqs({ general: true }) };
+  const [announcements, promos, heroImages, c] = await Promise.all([
+    getAnnouncements(),
+    getPromos(),
+    getHeroImages(3),
+    getPageContent(),
+  ]);
+
+  const whyPoints = whyIcons.map((icon, i) => ({
+    icon,
+    title: c[`home.why.p${i + 1}_title`],
+    body: c[`home.why.p${i + 1}_body`],
+  }));
 
   return (
     <>
@@ -63,23 +56,21 @@ export default async function Home() {
 
         <div className="container-x relative grid items-center gap-12 pt-14 pb-24 lg:grid-cols-[1.05fr_1fr] lg:gap-16 lg:pt-24 lg:pb-28">
           <div className="fade-up">
-            <div className="eyebrow">Imus · Cavite · Philippines</div>
+            <div className="eyebrow">{c["home.hero.eyebrow"]}</div>
             <h1 className="mt-4 font-display text-[2.75rem] leading-[1.05] text-ink-900 sm:text-6xl lg:text-[4.5rem]">
-              Beauty,{" "}
+              {c["home.hero.word1"]}{" "}
               <span className="relative inline-block">
-                <span className="relative z-10 italic text-terracotta-500">refined.</span>
+                <span className="relative z-10 italic text-terracotta-500">{c["home.hero.accent"]}</span>
                 <span
                   aria-hidden
                   className="absolute inset-x-0 bottom-1 -z-0 h-3 rounded-full bg-blush-200/70"
                 />
               </span>
               <br />
-              <span className="text-ink-700">brows that feel like you.</span>
+              <span className="text-ink-700">{c["home.hero.line2"]}</span>
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-ink-500">
-              From digital nano hair-stroke brows to glow-restoring hydra
-              facials — Emcey Brows blends artistry, premium pigments and a
-              calming studio experience.
+              {c["home.hero.subtext"]}
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3">
@@ -107,8 +98,8 @@ export default async function Home() {
             <div className="grid grid-cols-2 gap-3 sm:gap-4">
               <div className="relative aspect-[3/4] overflow-hidden rounded-[2rem] bg-gradient-to-br from-blush-200 via-blush-300 to-terracotta-400 shadow-warm">
                 <Image
-                  src="/images/hero/signature-2.jpg"
-                  alt="Microblading before and after by Emcey Brows — Imus, Cavite client"
+                  src={heroImages[0]}
+                  alt="Featured work by Emcey Brows — Imus, Cavite"
                   fill
                   priority
                   sizes="(max-width: 1024px) 50vw, 400px"
@@ -119,8 +110,8 @@ export default async function Home() {
               <div className="space-y-3 sm:space-y-4">
                 <div className="relative aspect-square overflow-hidden rounded-[2rem] bg-gradient-to-br from-nude-200 to-gold-400/60 shadow-soft float-slow">
                   <Image
-                    src="/images/hero/tile-1.jpg"
-                    alt="Emcey Brows studio — Imus, Cavite"
+                    src={heroImages[1]}
+                    alt="Emcey Brows work — Imus, Cavite"
                     fill
                     sizes="(max-width: 1024px) 25vw, 200px"
                     className="object-cover"
@@ -128,8 +119,8 @@ export default async function Home() {
                 </div>
                 <div className="relative aspect-square overflow-hidden rounded-[2rem] bg-gradient-to-br from-blush-100 to-blush-200 shadow-soft">
                   <Image
-                    src="/images/hero/tile-healed.jpg"
-                    alt="Ombre brows healed result — Emcey Brows, Imus Cavite"
+                    src={heroImages[2]}
+                    alt="Emcey Brows result — Imus, Cavite"
                     fill
                     sizes="(max-width: 1024px) 25vw, 200px"
                     className="object-cover"
@@ -153,18 +144,19 @@ export default async function Home() {
                 </div>
                 <div className="h-10 w-px bg-nude-200" />
                 <div>
-                  <div className="font-display text-2xl text-ink-900">1,200+</div>
+                  <div className="font-display text-2xl text-ink-900">{c["home.stats.clients"]}</div>
                   <div className="text-[10px] uppercase tracking-[0.3em] text-ink-500">
-                    Happy clients
+                    {c["home.stats.clients_label"]}
                   </div>
                 </div>
                 <div className="h-10 w-px bg-nude-200" />
                 <div>
                   <div className="flex items-center gap-1 font-display text-2xl text-ink-900">
-                    5.0<i className="pi pi-star-fill text-base text-gold-500" aria-hidden />
+                    {c["home.stats.rating"]}
+                    <i className="pi pi-star-fill text-base text-gold-500" aria-hidden />
                   </div>
                   <div className="text-[10px] uppercase tracking-[0.3em] text-ink-500">
-                    Avg rating
+                    {c["home.stats.rating_label"]}
                   </div>
                 </div>
               </div>
@@ -172,6 +164,9 @@ export default async function Home() {
           </div>
         </div>
       </section>
+
+      {/* Announcements & promos (dynamic, from admin) */}
+      <UpdatesSection announcements={announcements} promos={promos} />
 
       {/* Featured services */}
       <section className="section">
@@ -224,8 +219,8 @@ export default async function Home() {
           <SectionHeading
             align="left"
             eyebrow="Why Emcey Brows"
-            title="Quietly luxurious. Obsessively detailed."
-            description="Tiny details make every treatment exceptional — from custom shape mapping to premium pigments and a calming studio atmosphere."
+            title={c["home.why.title"]}
+            description={c["home.why.description"]}
           />
           <ul className="grid gap-4 sm:grid-cols-2">
             {whyPoints.map((f) => (
@@ -250,8 +245,8 @@ export default async function Home() {
           <div className="relative">
             <div className="relative aspect-square overflow-hidden rounded-[2.5rem] shadow-warm">
               <Image
-                src="/images/hero/transformation.jpg"
-                alt="Microblading before and after by Emcey Brows — Imus, Cavite client"
+                src={c["home.results.image"]}
+                alt="Emcey Brows result — Imus, Cavite"
                 fill
                 sizes="(max-width: 1024px) 100vw, 560px"
                 className="object-cover"
@@ -267,14 +262,12 @@ export default async function Home() {
             />
           </div>
           <div>
-            <div className="eyebrow">Real results</div>
+            <div className="eyebrow">{c["home.results.eyebrow"]}</div>
             <h2 className="mt-3 font-display text-4xl text-ink-900 sm:text-5xl">
-              A natural shape, made for your face.
+              {c["home.results.title"]}
             </h2>
             <p className="mt-4 max-w-md leading-relaxed text-ink-500">
-              Every brow is mapped to your features — never copied, never
-              forced. The result: defined, balanced brows that look like they
-              grew that way.
+              {c["home.results.body"]}
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link href="/gallery" className="btn btn-secondary">

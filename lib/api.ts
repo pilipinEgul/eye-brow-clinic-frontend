@@ -135,6 +135,16 @@ export type TrackedBooking = {
   service: { name: string } | null;
 };
 
+export type Announcement = {
+  id: number;
+  title: string;
+  body: string | null;
+  image_path: string | null;
+  tag: string | null;
+  link_url: string | null;
+  link_label: string | null;
+};
+
 export type Promo = {
   id: number;
   code: string;
@@ -224,6 +234,12 @@ export const api = {
       { data: null },
     ),
 
+  pageContent: () =>
+    safe(
+      apiFetch<ApiResource<Record<string, string>>>("/page-content", { revalidate: 60 }),
+      { data: {} },
+    ),
+
   services: (params: { featured?: boolean; category?: string; per_page?: number } = {}) => {
     const search = new URLSearchParams();
     if (params.featured) search.set("featured", "1");
@@ -276,6 +292,9 @@ export const api = {
     const q = search.toString();
     return safe(apiFetch<ApiCollection<Promo>>(`/promos${q ? `?${q}` : ""}`), EMPTY_COLLECTION());
   },
+
+  announcements: () =>
+    safe(apiFetch<ApiCollection<Announcement>>("/announcements"), EMPTY_COLLECTION()),
 
   availabilityRange: (params: { service_id: number; from?: string; days?: number }) => {
     const search = new URLSearchParams();

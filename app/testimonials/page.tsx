@@ -3,6 +3,7 @@ import Image from "next/image";
 import { SectionHeading } from "@/components/SectionHeading";
 import { ReviewLinks } from "@/components/ReviewLinks";
 import { GoogleReviews } from "@/components/GoogleReviews";
+import { getPageContent } from "@/lib/page-content";
 
 export const revalidate = 300;
 
@@ -12,29 +13,30 @@ export const metadata: Metadata = {
     "Real reviews and five-star Google ratings from clients of Emcey Brows Aesthetics across Cavite.",
 };
 
-const happyClientStrip = [
-  "/images/563379944_1559363695053661_1254350415973776143_n.jpg",
-  "/images/617573516_900360955780444_8416221202445316314_n.jpg",
-  "/images/566511023_1146226867043391_5455139529089946125_n.jpg",
-  "/images/563602481_1526465715026962_3442888535669137838_n.jpg",
-];
-
 export default async function TestimonialsPage() {
+  const c = await getPageContent();
+  const happyClientStrip = [
+    c["testimonials.image1"],
+    c["testimonials.image2"],
+    c["testimonials.image3"],
+    c["testimonials.image4"],
+  ];
+
   return (
     <>
       <section className="section">
         <div className="container-x">
           <SectionHeading
-            eyebrow="Client Love"
-            title="Five-star reviews & stories"
-            description="From first-time brow clients to long-time aesthetic regulars — here is what they say."
+            eyebrow={c["testimonials.eyebrow"]}
+            title={c["testimonials.title"]}
+            description={c["testimonials.description"]}
           />
 
           {/* Happy client strip */}
           <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
-            {happyClientStrip.map((src) => (
+            {happyClientStrip.map((src, i) => (
               <div
-                key={src}
+                key={i}
                 className="relative aspect-square overflow-hidden rounded-2xl border border-nude-100 shadow-soft"
               >
                 <Image

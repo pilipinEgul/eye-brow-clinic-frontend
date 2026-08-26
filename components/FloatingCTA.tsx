@@ -25,7 +25,7 @@ export function FloatingCTA() {
       {/* Desktop — bottom-right stack */}
       <div className="pointer-events-none fixed bottom-6 right-6 z-30 hidden flex-col items-end gap-3 md:flex">
         <a
-          href={site.socials.facebook}
+          href={site.socials.messenger}
           target="_blank"
           rel="noreferrer"
           className="pointer-events-auto flex items-center gap-2 rounded-full bg-white px-4 py-2.5 text-xs font-medium text-ink-900 shadow-soft ring-1 ring-nude-200 transition hover:-translate-y-0.5 hover:text-terracotta-500 hover:shadow-warm"
@@ -66,11 +66,11 @@ export function FloatingCTA() {
             Call
           </a>
           <a
-            href={site.socials.facebook}
+            href={site.socials.messenger}
             target="_blank"
             rel="noreferrer"
             className="flex flex-1 items-center justify-center gap-1.5 rounded-full bg-white px-3 py-2.5 text-xs font-medium text-ink-900 ring-1 ring-nude-100 transition active:scale-95"
-            aria-label="Message on Facebook"
+            aria-label="Message us on Messenger"
           >
             <span className="text-terracotta-500">
               <IconChat />

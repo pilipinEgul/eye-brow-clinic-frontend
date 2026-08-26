@@ -1,39 +1,39 @@
 @import "tailwindcss";
 
 @theme inline {
-  /* Background + foreground */
-  --color-background: #fbf3ec;
-  --color-foreground: #2a1f18;
+  /* Background + foreground — rich, sun-baked amber/apricot base */
+  --color-background: #f8d8b6;
+  --color-foreground: #29190f;
 
-  /* Cream (page surfaces) — warmer, softer than before */
-  --color-cream-50: #fdf8f2;
-  --color-cream-100: #fbf3ec;
-  --color-cream-200: #f6e8da;
+  /* Cream (page surfaces) — deep warm apricot */
+  --color-cream-50: #fde9ca;
+  --color-cream-100: #f8d8b6;
+  --color-cream-200: #eec7a0;
 
-  /* Blush — kept name, warmed toward peach */
-  --color-blush-50: #fdf2ea;
-  --color-blush-100: #fbe4d3;
-  --color-blush-200: #f5c8a8;
-  --color-blush-300: #eaa37a;
-  --color-blush-400: #d77f55;
-  --color-blush-500: #b86138;
+  /* Blush — rich peach */
+  --color-blush-50: #fbd0b3;
+  --color-blush-100: #f5b892;
+  --color-blush-200: #efb088;
+  --color-blush-300: #e59263;
+  --color-blush-400: #d37046;
+  --color-blush-500: #b65a32;
 
-  /* Terracotta — new, primary warm accent */
-  --color-terracotta-300: #e29776;
-  --color-terracotta-400: #c87653;
-  --color-terracotta-500: #a85638;
-  --color-terracotta-600: #874128;
+  /* Terracotta — primary warm accent, deeper/oranger */
+  --color-terracotta-300: #e6875f;
+  --color-terracotta-400: #cc6941;
+  --color-terracotta-500: #a94c2e;
+  --color-terracotta-600: #853a22;
 
-  /* Nude — kept, slightly warmer */
-  --color-nude-50: #faf2e6;
-  --color-nude-100: #f0e1cb;
-  --color-nude-200: #e4cba9;
-  --color-nude-300: #d2ad81;
+  /* Nude — warm golden amber */
+  --color-nude-50: #f5d2a2;
+  --color-nude-100: #e9be89;
+  --color-nude-200: #ddb680;
+  --color-nude-300: #cc9f66;
 
-  /* Gold — kept, slightly richer */
-  --color-gold-400: #c8a45f;
-  --color-gold-500: #af8736;
-  --color-gold-600: #8a661f;
+  /* Gold — slightly richer, warmer */
+  --color-gold-400: #caa457;
+  --color-gold-500: #b0862f;
+  --color-gold-600: #8a6419;
 
   /* Ink — kept */
   --color-ink-900: #2a1f18;
@@ -53,8 +53,8 @@
 }
 
 :root {
-  --background: #fbf3ec;
-  --foreground: #2a1f18;
+  --background: #f8d8b6;
+  --foreground: #29190f;
 }
 
 html {

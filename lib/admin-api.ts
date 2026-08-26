@@ -73,13 +73,13 @@ async function request<T>(path: string, opts: RequestInit = {}): Promise<T> {
   return body as T;
 }
 
-/** Uploads an image file and returns its site-relative path (e.g. /storage/uploads/x.jpg). */
-export async function uploadImage(file: File): Promise<{ path: string }> {
+/** Uploads a file to an admin upload endpoint and returns its site-relative path. */
+async function uploadTo(endpoint: string, file: File): Promise<{ path: string }> {
   const token = getToken();
   const fd = new FormData();
   fd.append("file", file);
 
-  const res = await fetch(`${API_BASE}/admin/uploads`, {
+  const res = await fetch(`${API_BASE}${endpoint}`, {
     method: "POST",
     // No Content-Type — the browser sets the multipart boundary itself.
     headers: {
@@ -103,6 +103,16 @@ export async function uploadImage(file: File): Promise<{ path: string }> {
     throw new AdminApiError(message, res.status, body);
   }
   return body as { path: string };
+}
+
+/** Uploads an image file and returns its site-relative path (e.g. /storage/uploads/x.jpg). */
+export function uploadImage(file: File): Promise<{ path: string }> {
+  return uploadTo("/admin/uploads", file);
+}
+
+/** Uploads a video file (mp4/webm/mov, ≤50 MB) and returns its site-relative path. */
+export function uploadVideo(file: File): Promise<{ path: string }> {
+  return uploadTo("/admin/uploads/video", file);
 }
 
 /**
@@ -132,6 +142,7 @@ export const adminApi = {
   me: () => request<{ user: AdminUser }>("/me"),
   logout: () => request<{ message: string }>("/logout", { method: "POST" }),
   dashboard: () => request<{ data: DashboardStats }>("/dashboard"),
+  bookingReport: () => request<{ data: BookingReport }>("/reports/bookings"),
 
   // Booking schedule (studio hours + slot interval)
   getSettings: () => request<{ data: BookingSettings }>("/settings"),
@@ -149,6 +160,14 @@ export const adminApi = {
       body: JSON.stringify(data),
     }),
 
+  // Editable page content (key => value)
+  getPageContent: () => request<{ data: Record<string, string> }>("/page-content"),
+  updatePageContent: (content: Record<string, string>) =>
+    request<{ data: Record<string, string> }>("/page-content", {
+      method: "PUT",
+      body: JSON.stringify({ content }),
+    }),
+
   // Generic CRUD (resource = "services", "testimonials", …)
   list: <T>(resource: string, query = "") => request<{ data: T[] }>(`/${resource}${query}`),
   create: <T>(resource: string, data: unknown) =>
@@ -157,6 +176,11 @@ export const adminApi = {
     request<{ data: T }>(`/${resource}/${id}`, { method: "PATCH", body: JSON.stringify(data) }),
   remove: (resource: string, id: number | string) =>
     request<{ message: string }>(`/${resource}/${id}`, { method: "DELETE" }),
+};
+
+export type BookingReport = {
+  months: string[];
+  series: { name: string; values: number[] }[];
 };
 
 export type BookingSettings = {

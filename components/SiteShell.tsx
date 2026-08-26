@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { FloatingCTA } from "@/components/FloatingCTA";
+import { AnnouncementPopup } from "@/components/AnnouncementPopup";
 import type { SiteSettings } from "@/lib/site-settings";
 
 /**
@@ -31,6 +32,7 @@ export function SiteShell({
       <main className="flex-1 pb-24 md:pb-0">{children}</main>
       <Footer settings={settings} />
       <FloatingCTA />
+      <AnnouncementPopup />
     </>
   );
 }

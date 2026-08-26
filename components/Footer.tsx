@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { nav } from "@/lib/site";
+import { nav, site } from "@/lib/site";
 import { areas } from "@/lib/areas";
 import type { SiteSettings } from "@/lib/site-settings";
 
@@ -36,12 +36,12 @@ export function Footer({ settings }: { settings: SiteSettings }) {
               Book Appointment
             </Link>
             <a
-              href={settings.socials.facebook}
+              href={site.socials.messenger}
               target="_blank"
               rel="noreferrer"
               className="btn btn-secondary"
             >
-              Message on Facebook
+              Message on Messenger
             </a>
           </div>
         </div>

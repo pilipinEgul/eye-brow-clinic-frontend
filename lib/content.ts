@@ -1,7 +1,9 @@
 import {
   api,
+  type Announcement,
   type Faq,
   type GalleryImage,
+  type Promo,
   type Service,
   type ServiceCategory,
 } from "@/lib/api";
@@ -43,5 +45,39 @@ export async function getFaqs(
 
 export async function getGallery(): Promise<GalleryImage[]> {
   const { data } = await api.gallery({ per_page: 60 });
+  return data;
+}
+
+/**
+ * Images for the home hero collage — pulled from the Gallery (featured first),
+ * so admins control them. Falls back to the built-in hero photos per slot so the
+ * hero is never blank before any gallery images are uploaded.
+ */
+const HERO_FALLBACK = [
+  "/images/hero/signature-2.jpg",
+  "/images/hero/tile-1.jpg",
+  "/images/hero/tile-healed.jpg",
+];
+
+/** next/image needs a root-relative ("/…") or absolute (http…) src — skip anything else. */
+function usableSrc(p: string | null): p is string {
+  return !!p && (p.startsWith("/") || /^https?:\/\//i.test(p));
+}
+
+export async function getHeroImages(count = 3): Promise<string[]> {
+  const gallery = await getGallery();
+  const featured = gallery.filter((g) => g.is_featured).map((g) => g.image_path).filter(usableSrc);
+  const others = gallery.filter((g) => !g.is_featured).map((g) => g.image_path).filter(usableSrc);
+  const pool = [...featured, ...others];
+  return Array.from({ length: count }, (_, i) => pool[i] ?? HERO_FALLBACK[i] ?? HERO_FALLBACK[0]);
+}
+
+export async function getAnnouncements(): Promise<Announcement[]> {
+  const { data } = await api.announcements();
+  return data;
+}
+
+export async function getPromos(): Promise<Promo[]> {
+  const { data } = await api.promos();
   return data;
 }

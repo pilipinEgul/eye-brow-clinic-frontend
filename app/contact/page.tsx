@@ -65,8 +65,8 @@ export default async function ContactPage() {
           </dl>
 
           <div className="mt-8 flex flex-wrap gap-3">
-            <a href={settings.socials.facebook} target="_blank" rel="noreferrer" className="btn btn-secondary">
-              Message on Facebook
+            <a href={site.socials.messenger} target="_blank" rel="noreferrer" className="btn btn-secondary">
+              Message on Messenger
             </a>
             <a
               href={settings.socials.googleMaps}

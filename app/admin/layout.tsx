@@ -1,30 +1,62 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { adminApi, clearToken, getToken } from "@/lib/admin-api";
 import { ToastProvider } from "@/lib/admin-toast";
 
-const NAV = [
-  { href: "/admin", label: "Dashboard" },
-  { href: "/admin/appointments", label: "Appointments" },
-  { href: "/admin/schedule", label: "Schedule" },
-  { href: "/admin/site-settings", label: "Business Info" },
-  { href: "/admin/closures", label: "Closures & Holidays" },
-  { href: "/admin/services", label: "Services" },
-  { href: "/admin/service-categories", label: "Categories" },
-  { href: "/admin/testimonials", label: "Testimonials" },
-  { href: "/admin/promos", label: "Promos" },
-  { href: "/admin/faqs", label: "FAQs" },
-  { href: "/admin/gallery", label: "Gallery" },
+const COLLAPSE_KEY = "emcey_admin_sidebar_collapsed";
+
+type NavItem = { href: string; label: string; icon: string };
+type NavGroup = { title: string; items: NavItem[] };
+
+const NAV_GROUPS: NavGroup[] = [
+  {
+    title: "Overview",
+    items: [{ href: "/admin", label: "Dashboard", icon: "pi-th-large" }],
+  },
+  {
+    title: "Bookings",
+    items: [
+      { href: "/admin/appointments", label: "Appointments", icon: "pi-calendar" },
+      { href: "/admin/schedule", label: "Schedule", icon: "pi-clock" },
+      { href: "/admin/closures", label: "Closures & Holidays", icon: "pi-calendar-times" },
+    ],
+  },
+  {
+    title: "Catalog",
+    items: [
+      { href: "/admin/services", label: "Services", icon: "pi-list" },
+      { href: "/admin/service-categories", label: "Categories", icon: "pi-tags" },
+      { href: "/admin/promos", label: "Promos", icon: "pi-percentage" },
+    ],
+  },
+  {
+    title: "Content",
+    items: [
+      { href: "/admin/page-content", label: "Page Content", icon: "pi-file-edit" },
+      { href: "/admin/announcements", label: "Announcements", icon: "pi-megaphone" },
+      { href: "/admin/gallery", label: "Gallery", icon: "pi-images" },
+      { href: "/admin/testimonials", label: "Testimonials", icon: "pi-comments" },
+      { href: "/admin/faqs", label: "FAQs", icon: "pi-question-circle" },
+    ],
+  },
+  {
+    title: "Settings",
+    items: [{ href: "/admin/site-settings", label: "Business Info", icon: "pi-building" }],
+  },
 ];
+
+const ALL_ITEMS = NAV_GROUPS.flatMap((g) => g.items);
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const isLogin = pathname === "/admin/login";
   const [ready, setReady] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
 
   useEffect(() => {
     if (isLogin) {
@@ -37,6 +69,18 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     }
     setReady(true);
   }, [isLogin, pathname, router]);
+
+  useEffect(() => {
+    setCollapsed(localStorage.getItem(COLLAPSE_KEY) === "1");
+  }, []);
+
+  function toggleCollapsed() {
+    setCollapsed((prev) => {
+      const next = !prev;
+      localStorage.setItem(COLLAPSE_KEY, next ? "1" : "0");
+      return next;
+    });
+  }
 
   if (isLogin) return <>{children}</>;
 
@@ -54,47 +98,130 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     router.replace("/admin/login");
   }
 
+  // Exact for the dashboard root; boundary-aware elsewhere so "/services" does
+  // not also light up "/service-categories".
   const isActive = (href: string) =>
-    href === "/admin" ? pathname === "/admin" : pathname?.startsWith(href);
+    href === "/admin"
+      ? pathname === "/admin"
+      : pathname === href || (pathname?.startsWith(href + "/") ?? false);
 
   return (
     <ToastProvider>
-    <div className="min-h-screen bg-cream-50 text-ink-900 md:flex">
-      <aside className="border-b border-nude-100 bg-white md:flex md:h-screen md:w-60 md:shrink-0 md:flex-col md:border-b-0 md:border-r md:sticky md:top-0">
-        <div className="flex items-center justify-between px-5 py-4">
-          <span className="font-display text-lg">Emcey Admin</span>
+      <div className="min-h-screen bg-cream-100 text-ink-900 md:flex">
+        <aside
+          className={`border-b border-nude-100 bg-white transition-[width] md:sticky md:top-0 md:flex md:h-screen md:shrink-0 md:flex-col md:border-b-0 md:border-r ${
+            collapsed ? "md:w-[76px]" : "md:w-64"
+          }`}
+        >
+          {/* Brand */}
+          <div className="px-3 py-4 md:border-b md:border-nude-100">
+            <div className={`flex items-center ${collapsed ? "md:flex-col md:gap-3" : "justify-between gap-2 px-2"}`}>
+              <Link href="/admin" className="flex min-w-0 items-center gap-2">
+                <Image
+                  src="/images/logo.jpg"
+                  alt="Emcey Brows"
+                  width={36}
+                  height={36}
+                  className="h-9 w-9 shrink-0 rounded-lg object-cover shadow-soft"
+                />
+                <span className={`font-display text-lg leading-none ${collapsed ? "md:hidden" : ""}`}>
+                  Emcey Admin
+                </span>
+              </Link>
+              <button
+                onClick={logout}
+                className="text-xs uppercase tracking-[0.2em] text-ink-500 hover:text-ink-900 md:hidden"
+              >
+                Log out
+              </button>
+              <button
+                onClick={toggleCollapsed}
+                aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+                className="hidden h-7 w-7 place-items-center rounded-lg text-ink-400 transition hover:bg-nude-100 hover:text-ink-900 md:grid"
+              >
+                <i className={`pi ${collapsed ? "pi-angle-right" : "pi-angle-left"} text-sm`} aria-hidden />
+              </button>
+            </div>
+          </div>
+
+          {/* Mobile — horizontal chip scroller */}
+          <nav className="flex gap-1.5 overflow-x-auto px-3 pb-3 md:hidden">
+            {ALL_ITEMS.map((item) => {
+              const active = isActive(item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1.5 text-xs transition ${
+                    active
+                      ? "bg-gold-500/15 font-medium text-gold-700"
+                      : "text-ink-600 hover:bg-nude-100"
+                  }`}
+                >
+                  <i className={`pi ${item.icon} text-[0.7rem]`} aria-hidden />
+                  {item.label}
+                </Link>
+              );
+            })}
+          </nav>
+
+          {/* Desktop — grouped vertical nav */}
+          <nav className="hidden px-2 py-4 md:flex md:flex-1 md:flex-col md:gap-4 md:overflow-y-auto">
+            {NAV_GROUPS.map((group) => (
+              <div key={group.title}>
+                {collapsed ? (
+                  <div className="mx-2 mb-1 border-t border-nude-100/70" />
+                ) : (
+                  <div className="px-3 pb-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-ink-300">
+                    {group.title}
+                  </div>
+                )}
+                <div className="flex flex-col gap-0.5">
+                  {group.items.map((item) => {
+                    const active = isActive(item.href);
+                    return (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        title={collapsed ? item.label : undefined}
+                        className={`group flex items-center rounded-xl text-sm transition ${
+                          collapsed ? "justify-center px-0 py-2.5" : "gap-3 px-3 py-2"
+                        } ${
+                          active
+                            ? "bg-gold-500/15 font-medium text-gold-700"
+                            : "text-ink-600 hover:bg-nude-100 hover:text-ink-900"
+                        }`}
+                      >
+                        <i
+                          className={`pi ${item.icon} text-[0.95rem] ${
+                            active ? "text-gold-600" : "text-ink-300 group-hover:text-terracotta-500"
+                          }`}
+                          aria-hidden
+                        />
+                        {!collapsed && <span className="whitespace-nowrap">{item.label}</span>}
+                      </Link>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
+          </nav>
+
+          {/* Desktop — logout */}
           <button
             onClick={logout}
-            className="text-xs uppercase tracking-[0.2em] text-ink-500 hover:text-ink-900 md:hidden"
+            title={collapsed ? "Log out" : undefined}
+            className={`hidden items-center border-t border-nude-100 py-4 text-sm text-ink-500 transition hover:text-terracotta-500 md:flex ${
+              collapsed ? "md:justify-center" : "gap-2 px-5"
+            }`}
           >
-            Log out
+            <i className="pi pi-sign-out" aria-hidden />
+            {!collapsed && "Log out"}
           </button>
-        </div>
-        <nav className="flex gap-1 overflow-x-auto px-3 pb-3 md:flex-1 md:flex-col md:gap-0.5 md:overflow-visible md:px-3">
-          {NAV.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`whitespace-nowrap rounded-xl px-3 py-2 text-sm transition ${
-                isActive(item.href)
-                  ? "bg-gold-500/15 font-medium text-gold-700"
-                  : "text-ink-600 hover:bg-nude-100"
-              }`}
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-        <button
-          onClick={logout}
-          className="hidden px-5 py-4 text-left text-xs uppercase tracking-[0.2em] text-ink-500 hover:text-ink-900 md:block"
-        >
-          Log out
-        </button>
-      </aside>
+        </aside>
 
-      <main className="min-w-0 flex-1 p-5 md:p-8">{children}</main>
-    </div>
+        <main className="min-w-0 flex-1 p-5 md:p-8">{children}</main>
+      </div>
     </ToastProvider>
   );
 }
