@@ -143,7 +143,7 @@ export const adminApi = {
   logout: () => request<{ message: string }>("/logout", { method: "POST" }),
   dashboard: () => request<{ data: DashboardStats }>("/dashboard"),
   bookingReport: () => request<{ data: BookingReport }>("/reports/bookings"),
-  unreadMessages: () => request<{ data: { count: number } }>("/contact-inquiries/unread"),
+  badges: () => request<{ data: { messages: number; appointments: number } }>("/badges"),
 
   // Booking schedule (studio hours + slot interval)
   getSettings: () => request<{ data: BookingSettings }>("/settings"),

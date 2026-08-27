@@ -70,6 +70,7 @@ export default function AdminAppointmentsPage() {
           ? `Confirmed — ${appointment.customer_name}'s booking was added to the calendar.`
           : `Booking marked as ${nextStatus}.`,
       );
+      window.dispatchEvent(new Event("emcey:badges-changed"));
     } catch (err) {
       toast(err instanceof Error ? err.message : "Update failed. Please try again.", "error");
     } finally {
@@ -84,6 +85,7 @@ export default function AdminAppointmentsPage() {
       await adminApi.remove("appointments", id);
       setItems((prev) => prev.filter((a) => a.id !== id));
       toast("Appointment deleted.");
+      window.dispatchEvent(new Event("emcey:badges-changed"));
     } catch (err) {
       toast(err instanceof Error ? err.message : "Delete failed.", "error");
     }

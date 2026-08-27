@@ -77,32 +77,35 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     setCollapsed(localStorage.getItem(COLLAPSE_KEY) === "1");
   }, []);
 
-  // Unread-message indicator.
-  const [unread, setUnread] = useState(0);
-  const fetchUnread = useCallback(() => {
+  // "Needs attention" badges (unread messages, pending appointments).
+  const [badges, setBadges] = useState({ messages: 0, appointments: 0 });
+  const fetchBadges = useCallback(() => {
     if (!getToken()) return;
     adminApi
-      .unreadMessages()
-      .then((r) => setUnread(r.data.count))
+      .badges()
+      .then((r) => setBadges(r.data))
       .catch(() => {});
   }, []);
 
   // Refetch on navigation…
   useEffect(() => {
-    if (!isLogin) fetchUnread();
-  }, [isLogin, pathname, fetchUnread]);
+    if (!isLogin) fetchBadges();
+  }, [isLogin, pathname, fetchBadges]);
 
-  // …plus poll, and update instantly when the Messages page changes something.
+  // …plus poll, and update instantly when a page changes something.
   useEffect(() => {
     if (isLogin) return;
-    const id = setInterval(fetchUnread, 60_000);
-    const onChange = () => fetchUnread();
-    window.addEventListener("emcey:messages-changed", onChange);
+    const id = setInterval(fetchBadges, 60_000);
+    const onChange = () => fetchBadges();
+    window.addEventListener("emcey:badges-changed", onChange);
     return () => {
       clearInterval(id);
-      window.removeEventListener("emcey:messages-changed", onChange);
+      window.removeEventListener("emcey:badges-changed", onChange);
     };
-  }, [isLogin, fetchUnread]);
+  }, [isLogin, fetchBadges]);
+
+  const badgeFor = (href: string) =>
+    href === "/admin/messages" ? badges.messages : href === "/admin/appointments" ? badges.appointments : 0;
 
   function toggleCollapsed() {
     setCollapsed((prev) => {
@@ -178,7 +181,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <nav className="flex gap-1.5 overflow-x-auto px-3 pb-3 md:hidden">
             {ALL_ITEMS.map((item) => {
               const active = isActive(item.href);
-              const badge = item.href === "/admin/messages" ? unread : 0;
+              const badge = badgeFor(item.href);
               return (
                 <Link
                   key={item.href}
@@ -215,7 +218,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <div className="flex flex-col gap-0.5">
                   {group.items.map((item) => {
                     const active = isActive(item.href);
-                    const badge = item.href === "/admin/messages" ? unread : 0;
+                    const badge = badgeFor(item.href);
                     return (
                       <Link
                         key={item.href}

@@ -38,7 +38,7 @@ export default function AdminMessagesPage() {
   }, []);
 
   function notifyBadge() {
-    window.dispatchEvent(new Event("emcey:messages-changed"));
+    window.dispatchEvent(new Event("emcey:badges-changed"));
   }
 
   async function setStatus(id: number, status: Inquiry["status"]) {
