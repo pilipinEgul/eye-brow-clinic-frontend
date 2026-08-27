@@ -37,10 +37,15 @@ export default function AdminMessagesPage() {
       .finally(() => setLoading(false));
   }, []);
 
+  function notifyBadge() {
+    window.dispatchEvent(new Event("emcey:messages-changed"));
+  }
+
   async function setStatus(id: number, status: Inquiry["status"]) {
     setItems((prev) => prev.map((m) => (m.id === id ? { ...m, status } : m)));
     try {
       await adminApi.update("contact-inquiries", id, { status });
+      notifyBadge();
     } catch (err) {
       toast(err instanceof Error ? err.message : "Update failed.", "error");
     }
@@ -51,6 +56,7 @@ export default function AdminMessagesPage() {
     try {
       await adminApi.remove("contact-inquiries", id);
       setItems((prev) => prev.filter((m) => m.id !== id));
+      notifyBadge();
       toast("Message deleted.");
     } catch (err) {
       toast(err instanceof Error ? err.message : "Delete failed.", "error");

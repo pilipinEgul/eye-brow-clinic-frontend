@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -77,6 +77,33 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     setCollapsed(localStorage.getItem(COLLAPSE_KEY) === "1");
   }, []);
 
+  // Unread-message indicator.
+  const [unread, setUnread] = useState(0);
+  const fetchUnread = useCallback(() => {
+    if (!getToken()) return;
+    adminApi
+      .unreadMessages()
+      .then((r) => setUnread(r.data.count))
+      .catch(() => {});
+  }, []);
+
+  // Refetch on navigation…
+  useEffect(() => {
+    if (!isLogin) fetchUnread();
+  }, [isLogin, pathname, fetchUnread]);
+
+  // …plus poll, and update instantly when the Messages page changes something.
+  useEffect(() => {
+    if (isLogin) return;
+    const id = setInterval(fetchUnread, 60_000);
+    const onChange = () => fetchUnread();
+    window.addEventListener("emcey:messages-changed", onChange);
+    return () => {
+      clearInterval(id);
+      window.removeEventListener("emcey:messages-changed", onChange);
+    };
+  }, [isLogin, fetchUnread]);
+
   function toggleCollapsed() {
     setCollapsed((prev) => {
       const next = !prev;
@@ -151,6 +178,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <nav className="flex gap-1.5 overflow-x-auto px-3 pb-3 md:hidden">
             {ALL_ITEMS.map((item) => {
               const active = isActive(item.href);
+              const badge = item.href === "/admin/messages" ? unread : 0;
               return (
                 <Link
                   key={item.href}
@@ -163,6 +191,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 >
                   <i className={`pi ${item.icon} text-[0.7rem]`} aria-hidden />
                   {item.label}
+                  {badge > 0 ? (
+                    <span className="rounded-full bg-red-500 px-1.5 text-[10px] font-semibold text-white">
+                      {badge}
+                    </span>
+                  ) : null}
                 </Link>
               );
             })}
@@ -182,6 +215,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <div className="flex flex-col gap-0.5">
                   {group.items.map((item) => {
                     const active = isActive(item.href);
+                    const badge = item.href === "/admin/messages" ? unread : 0;
                     return (
                       <Link
                         key={item.href}
@@ -195,13 +229,27 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                             : "text-ink-600 hover:bg-nude-100 hover:text-ink-900"
                         }`}
                       >
-                        <i
-                          className={`pi ${item.icon} text-[0.95rem] ${
-                            active ? "text-gold-600" : "text-ink-300 group-hover:text-terracotta-500"
-                          }`}
-                          aria-hidden
-                        />
-                        {!collapsed && <span className="whitespace-nowrap">{item.label}</span>}
+                        <span className="relative">
+                          <i
+                            className={`pi ${item.icon} text-[0.95rem] ${
+                              active ? "text-gold-600" : "text-ink-300 group-hover:text-terracotta-500"
+                            }`}
+                            aria-hidden
+                          />
+                          {collapsed && badge > 0 ? (
+                            <span className="absolute -right-1.5 -top-1.5 h-2 w-2 rounded-full bg-red-500 ring-2 ring-white" />
+                          ) : null}
+                        </span>
+                        {!collapsed ? (
+                          <>
+                            <span className="whitespace-nowrap">{item.label}</span>
+                            {badge > 0 ? (
+                              <span className="ml-auto rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-semibold leading-none text-white">
+                                {badge}
+                              </span>
+                            ) : null}
+                          </>
+                        ) : null}
                       </Link>
                     );
                   })}
