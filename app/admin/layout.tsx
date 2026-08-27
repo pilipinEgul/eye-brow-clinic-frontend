@@ -15,7 +15,10 @@ type NavGroup = { title: string; items: NavItem[] };
 const NAV_GROUPS: NavGroup[] = [
   {
     title: "Overview",
-    items: [{ href: "/admin", label: "Dashboard", icon: "pi-th-large" }],
+    items: [
+      { href: "/admin", label: "Dashboard", icon: "pi-th-large" },
+      { href: "/admin/messages", label: "Messages", icon: "pi-inbox" },
+    ],
   },
   {
     title: "Bookings",
