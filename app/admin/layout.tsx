@@ -64,6 +64,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const isLogin = pathname === "/admin/login";
   const [ready, setReady] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
+  // Accumulating angle so the toggle arrow keeps spinning in one direction.
+  const [arrowSpin, setArrowSpin] = useState(0);
 
   useEffect(() => {
     if (isLogin) {
@@ -87,7 +89,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     if (!getToken()) return;
     adminApi
       .badges()
-      .then((r) => setBadges(r.data))
+      .then((r) =>
+        setBadges({
+          messages: r?.data?.messages ?? 0,
+          appointments: r?.data?.appointments ?? 0,
+        }),
+      )
       .catch(() => {});
   }, []);
 
@@ -109,9 +116,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }, [isLogin, fetchBadges]);
 
   const badgeFor = (href: string) =>
-    href === "/admin/messages" ? badges.messages : href === "/admin/appointments" ? badges.appointments : 0;
+    href === "/admin/messages"
+      ? badges?.messages ?? 0
+      : href === "/admin/appointments"
+        ? badges?.appointments ?? 0
+        : 0;
 
   function toggleCollapsed() {
+    setArrowSpin((s) => s + 180);
     setCollapsed((prev) => {
       const next = !prev;
       localStorage.setItem(COLLAPSE_KEY, next ? "1" : "0");
@@ -146,13 +158,28 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     <ToastProvider>
       <div className="min-h-screen bg-cream-100 text-ink-900 md:flex">
         <aside
-          className={`border-b border-nude-100 bg-white transition-[width] md:sticky md:top-0 md:flex md:h-screen md:shrink-0 md:flex-col md:border-b-0 md:border-r ${
+          className={`relative border-b border-nude-100 bg-white transition-[width] duration-500 ease-in-out md:sticky md:top-0 md:flex md:h-screen md:shrink-0 md:flex-col md:border-b-0 md:border-r ${
             collapsed ? "md:w-[76px]" : "md:w-64"
           }`}
         >
+          {/* Floating collapse toggle — straddles the sidebar's right edge so it
+              lives in the same, easy-to-find spot whether expanded or collapsed. */}
+          <button
+            onClick={toggleCollapsed}
+            aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+            title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+            className="absolute -right-[15px] top-[26px] z-20 hidden h-[30px] w-[30px] place-items-center rounded-full border border-nude-200 bg-white text-ink-500 shadow-soft transition-all duration-300 ease-out hover:scale-110 hover:border-terracotta-400 hover:text-terracotta-500 hover:shadow-warm active:scale-90 md:grid"
+          >
+            <i
+              className="pi pi-angle-left text-sm transition-transform duration-700 ease-out"
+              style={{ transform: `rotate(${arrowSpin}deg)` }}
+              aria-hidden
+            />
+          </button>
+
           {/* Brand */}
           <div className="px-3 py-4 md:border-b md:border-nude-100">
-            <div className={`flex items-center ${collapsed ? "md:flex-col md:gap-3" : "justify-between gap-2 px-2"}`}>
+            <div className={`flex items-center ${collapsed ? "md:justify-center" : "justify-between"} gap-2 px-2`}>
               <Link href="/admin" className="flex min-w-0 items-center gap-2">
                 <Image
                   src="/images/logo.jpg"
@@ -170,13 +197,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 className="text-xs uppercase tracking-[0.2em] text-ink-500 hover:text-ink-900 md:hidden"
               >
                 Log out
-              </button>
-              <button
-                onClick={toggleCollapsed}
-                aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-                className="hidden h-7 w-7 place-items-center rounded-lg text-ink-400 transition hover:bg-nude-100 hover:text-ink-900 md:grid"
-              >
-                <i className={`pi ${collapsed ? "pi-angle-right" : "pi-angle-left"} text-sm`} aria-hidden />
               </button>
             </div>
           </div>
@@ -210,17 +230,20 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
           {/* Desktop — grouped vertical nav */}
           <nav className="hidden px-2 py-4 md:flex md:flex-1 md:flex-col md:gap-4 md:overflow-y-auto">
-            {NAV_GROUPS.map((group) => (
+            {NAV_GROUPS.map((group, gi) => (
               <div key={group.title}>
                 {collapsed ? (
                   <div className="mx-2 mb-1 border-t border-nude-100/70" />
                 ) : (
-                  <div className="px-3 pb-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-ink-300">
+                  <div
+                    className="sidebar-item-in px-3 pb-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-ink-300"
+                    style={{ animationDelay: `${120 + gi * 90}ms` }}
+                  >
                     {group.title}
                   </div>
                 )}
                 <div className="flex flex-col gap-0.5">
-                  {group.items.map((item) => {
+                  {group.items.map((item, ii) => {
                     const active = isActive(item.href);
                     const badge = badgeFor(item.href);
                     return (
@@ -247,16 +270,25 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                             <span className="absolute -right-1.5 -top-1.5 h-2 w-2 rounded-full bg-red-500 ring-2 ring-white" />
                           ) : null}
                         </span>
-                        {!collapsed ? (
-                          <>
-                            <span className="whitespace-nowrap">{item.label}</span>
-                            {badge > 0 ? (
-                              <span className="ml-auto rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-semibold leading-none text-white">
-                                {badge}
-                              </span>
-                            ) : null}
-                          </>
-                        ) : null}
+                        <span
+                          className={`flex min-w-0 items-center overflow-hidden transition-all duration-300 ease-out ${
+                            collapsed
+                              ? "max-w-0 flex-none -translate-x-2 opacity-0"
+                              : "max-w-[170px] flex-1 translate-x-0 opacity-100"
+                          }`}
+                          style={{
+                            transitionDelay: collapsed
+                              ? `${gi * 45 + ii * 30}ms` // dock: quick sequential tuck-away
+                              : `${160 + gi * 90 + ii * 55}ms`, // open: leisurely cascade in
+                          }}
+                        >
+                          <span className="whitespace-nowrap">{item.label}</span>
+                          {badge > 0 ? (
+                            <span className="ml-auto rounded-full bg-red-500 px-1.5 py-0.5 text-[10px] font-semibold leading-none text-white">
+                              {badge}
+                            </span>
+                          ) : null}
+                        </span>
                       </Link>
                     );
                   })}
