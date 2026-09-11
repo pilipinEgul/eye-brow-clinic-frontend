@@ -240,6 +240,9 @@ export const api = {
       { data: {} },
     ),
 
+  theme: () =>
+    safe(apiFetch<ApiResource<unknown>>("/theme", { revalidate: 60 }), { data: null }),
+
   services: (params: { featured?: boolean; category?: string; per_page?: number } = {}) => {
     const search = new URLSearchParams();
     if (params.featured) search.set("featured", "1");

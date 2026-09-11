@@ -6,6 +6,9 @@ import { SiteShell } from "@/components/SiteShell";
 import { JsonLd } from "@/components/JsonLd";
 import { ToastProvider } from "@/lib/toast";
 import { getSiteSettings } from "@/lib/site-settings";
+import { api } from "@/lib/api";
+import { normalizeTheme, themeCss } from "@/lib/theme";
+import { ThemeSync } from "@/components/ThemeSync";
 import { localBusinessSchema } from "@/lib/schemas";
 import { site } from "@/lib/site";
 
@@ -74,14 +77,27 @@ export const metadata: Metadata = {
 export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const siteSettings = await getSiteSettings();
+  const [siteSettings, themeRes] = await Promise.all([getSiteSettings(), api.theme()]);
+  const theme = normalizeTheme(themeRes.data);
+
+  // Apply mode before first paint — no flash. Priority: the visitor's saved
+  // toggle → the admin default → (when default is "system") the device setting.
+  const noFlash = `(function(){try{var s=localStorage.getItem('emcey-theme-mode');var d='${theme.default_mode}';var sys=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';var m=(s==='light'||s==='dark')?s:(d==='system'?sys:d);document.documentElement.setAttribute('data-theme',m);}catch(e){}})();`;
+  const ssrMode = theme.default_mode === "dark" ? "dark" : "light";
 
   return (
     <html
       lang="en"
+      data-theme={ssrMode}
+      suppressHydrationWarning
       className={`${inter.variable} ${cormorant.variable} h-full antialiased`}
     >
+      <head>
+        <style id="emcey-theme" dangerouslySetInnerHTML={{ __html: themeCss(theme) }} />
+        <script dangerouslySetInnerHTML={{ __html: noFlash }} />
+      </head>
       <body className="min-h-full flex flex-col bg-cream-100 text-ink-900">
+        <ThemeSync defaultMode={theme.default_mode} />
         <ToastProvider>
           <SiteShell settings={siteSettings}>{children}</SiteShell>
         </ToastProvider>

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { adminApi, clearToken, getToken } from "@/lib/admin-api";
 import { ToastProvider } from "@/lib/admin-toast";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const COLLAPSE_KEY = "emcey_admin_sidebar_collapsed";
 
@@ -48,7 +49,10 @@ const NAV_GROUPS: NavGroup[] = [
   },
   {
     title: "Settings",
-    items: [{ href: "/admin/site-settings", label: "Business Info", icon: "pi-building" }],
+    items: [
+      { href: "/admin/site-settings", label: "Business Info", icon: "pi-building" },
+      { href: "/admin/appearance", label: "Appearance", icon: "pi-palette" },
+    ],
   },
 ];
 
@@ -261,17 +265,24 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             ))}
           </nav>
 
-          {/* Desktop — logout */}
-          <button
-            onClick={logout}
-            title={collapsed ? "Log out" : undefined}
-            className={`hidden items-center border-t border-nude-100 py-4 text-sm text-ink-500 transition hover:text-terracotta-500 md:flex ${
-              collapsed ? "md:justify-center" : "gap-2 px-5"
+          {/* Desktop — theme toggle + logout */}
+          <div
+            className={`hidden items-center border-t border-nude-100 py-3 md:flex ${
+              collapsed ? "flex-col gap-2" : "gap-2 px-4"
             }`}
           >
-            <i className="pi pi-sign-out" aria-hidden />
-            {!collapsed && "Log out"}
-          </button>
+            <ThemeToggle className="!h-9 !w-9" />
+            <button
+              onClick={logout}
+              title={collapsed ? "Log out" : undefined}
+              className={`flex items-center gap-2 rounded-xl px-3 py-2 text-sm text-ink-500 transition hover:bg-nude-100 hover:text-terracotta-500 ${
+                collapsed ? "" : "flex-1"
+              }`}
+            >
+              <i className="pi pi-sign-out" aria-hidden />
+              {!collapsed && "Log out"}
+            </button>
+          </div>
         </aside>
 
         <main className="min-w-0 flex-1 p-5 md:p-8">{children}</main>

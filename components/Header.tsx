@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { nav } from "@/lib/site";
 import type { SiteSettings } from "@/lib/site-settings";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export function Header({ settings }: { settings: SiteSettings }) {
   const [open, setOpen] = useState(false);
@@ -30,10 +31,11 @@ export function Header({ settings }: { settings: SiteSettings }) {
 
   return (
     <header
+      style={{ backgroundColor: "var(--color-header)" }}
       className={`sticky top-0 z-40 transition-all duration-300 ${
         scrolled
-          ? "border-b border-nude-100/70 bg-cream-50/90 shadow-[0_8px_30px_-20px_rgba(135,65,40,0.25)] backdrop-blur-xl"
-          : "border-b border-transparent bg-cream-50/60 backdrop-blur-md"
+          ? "border-b border-nude-100/70 shadow-[0_8px_30px_-20px_rgba(135,65,40,0.25)]"
+          : "border-b border-transparent"
       }`}
     >
       <div className="container-x flex h-[72px] items-center justify-between md:h-20">
@@ -68,7 +70,8 @@ export function Header({ settings }: { settings: SiteSettings }) {
           ))}
         </nav>
 
-        <div className="hidden lg:block">
+        <div className="hidden items-center gap-2 lg:flex">
+          <ThemeToggle />
           <Link href="/book" className="btn btn-primary">
             Book Appointment
           </Link>
@@ -130,13 +133,16 @@ export function Header({ settings }: { settings: SiteSettings }) {
                 <i className="pi pi-arrow-right text-xs text-terracotta-400 opacity-0 transition group-hover:translate-x-1 group-hover:opacity-100" aria-hidden />
               </Link>
             ))}
-            <Link
-              href="/book"
-              onClick={() => setOpen(false)}
-              className="btn btn-primary mt-3 w-full"
-            >
-              Book Appointment
-            </Link>
+            <div className="mt-3 flex items-center gap-2">
+              <Link
+                href="/book"
+                onClick={() => setOpen(false)}
+                className="btn btn-primary flex-1"
+              >
+                Book Appointment
+              </Link>
+              <ThemeToggle />
+            </div>
             <div className="mt-4 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 border-t border-nude-100 pt-4 text-xs text-ink-500">
               <a href={`tel:${settings.contact.landlineTel}`} className="inline-flex items-center gap-1.5 hover:text-terracotta-500">
                 <i className="pi pi-phone text-[0.7rem]" aria-hidden />

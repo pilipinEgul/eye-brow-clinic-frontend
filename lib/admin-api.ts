@@ -169,6 +169,11 @@ export const adminApi = {
       body: JSON.stringify({ content }),
     }),
 
+  // Theme (colors + light/dark default)
+  getTheme: () => request<{ data: unknown }>("/theme"),
+  updateTheme: (theme: unknown) =>
+    request<{ data: unknown }>("/theme", { method: "PUT", body: JSON.stringify(theme) }),
+
   // Generic CRUD (resource = "services", "testimonials", …)
   list: <T>(resource: string, query = "") => request<{ data: T[] }>(`/${resource}${query}`),
   create: <T>(resource: string, data: unknown) =>

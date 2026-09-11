@@ -6,7 +6,7 @@ import { getPageContent } from "@/lib/page-content";
 export const revalidate = 300;
 
 export const metadata: Metadata = {
-  title: "About — Best Aesthetic Clinic in Imus, Cavite",
+  title: "About - Best Aesthetic Clinic in Imus, Cavite",
   description:
     "Meet the artists behind Emcey Brows Aesthetics. Learn about our certifications, hygiene standards and why brow lovers across Cavite trust our studio.",
 };

@@ -3,7 +3,9 @@ import Image from "next/image";
 import { SectionHeading } from "@/components/SectionHeading";
 import { ReviewLinks } from "@/components/ReviewLinks";
 import { GoogleReviews } from "@/components/GoogleReviews";
+import { ReviewsWall } from "@/components/ReviewsWall";
 import { getPageContent } from "@/lib/page-content";
+import { api } from "@/lib/api";
 
 export const revalidate = 300;
 
@@ -15,6 +17,7 @@ export const metadata: Metadata = {
 
 export default async function TestimonialsPage() {
   const c = await getPageContent();
+  const { data: reviews } = await api.testimonials({ per_page: 200 });
   const happyClientStrip = [
     c["testimonials.image1"],
     c["testimonials.image2"],
@@ -51,6 +54,12 @@ export default async function TestimonialsPage() {
           </div>
 
           <GoogleReviews className="mt-16" />
+
+          {/* All reviews — filterable & sortable (from admin Testimonials) */}
+          <div className="mt-16">
+            <h2 className="mb-6 text-center font-display text-2xl text-ink-900">All client reviews</h2>
+            <ReviewsWall reviews={reviews} />
+          </div>
 
           <ReviewLinks className="mt-16" />
         </div>

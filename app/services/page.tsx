@@ -4,6 +4,7 @@ import Link from "next/link";
 import { getServices, getServiceCategories } from "@/lib/content";
 import { ServiceCard } from "@/components/ServiceCard";
 import { SectionHeading } from "@/components/SectionHeading";
+import { CategoryPills } from "@/components/CategoryPills";
 
 export const revalidate = 300;
 
@@ -15,9 +16,26 @@ export const metadata: Metadata = {
 
 export default async function ServicesPage() {
   const [services, categories] = await Promise.all([
-    getServices().then((data) => ({ data })),
-    getServiceCategories().then((data) => ({ data })),
+    getServices(),
+    getServiceCategories(),
   ]);
+
+  // Group services by category, preserving each category's admin sort order.
+  const groups = [...categories]
+    .sort((a, b) => a.sort_order - b.sort_order)
+    .map((c) => ({
+      slug: c.slug,
+      name: c.name,
+      services: services.filter((s) => s.category?.id === c.id),
+    }))
+    .filter((g) => g.services.length > 0);
+
+  const uncategorized = services.filter((s) => !s.category);
+  if (uncategorized.length > 0) {
+    groups.push({ slug: "other", name: "Other", services: uncategorized });
+  }
+
+  const navItems = groups.map((g) => ({ slug: g.slug, name: g.name }));
 
   return (
     <>
@@ -47,23 +65,10 @@ export default async function ServicesPage() {
           <SectionHeading
             eyebrow="Browse all treatments"
             title="Pricing, duration and benefits at a glance"
-            description="Tap any card for the full breakdown — process, aftercare and FAQs."
+            description="Tap a category to jump to it — then tap any card for the full breakdown: process, aftercare and FAQs."
           />
 
-          {categories.data.length > 0 ? (
-            <div className="mt-10 flex flex-wrap justify-center gap-2">
-              {categories.data.map((c) => (
-                <span
-                  key={c.id}
-                  className="rounded-full border border-nude-200 bg-white px-4 py-2 text-xs uppercase tracking-[0.25em] text-ink-700"
-                >
-                  {c.name}
-                </span>
-              ))}
-            </div>
-          ) : null}
-
-          {services.data.length === 0 ? (
+          {services.length === 0 ? (
             <div className="mx-auto mt-12 max-w-md rounded-3xl border border-nude-100 bg-white/70 p-8 text-center shadow-sm">
               <i className="pi pi-sparkles text-3xl text-gold-500" aria-hidden />
               <p className="mt-3 font-display text-xl text-ink-900">
@@ -83,11 +88,34 @@ export default async function ServicesPage() {
               </div>
             </div>
           ) : (
-            <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {services.data.map((s) => (
-                <ServiceCard key={s.id} service={s} />
-              ))}
-            </div>
+            <>
+              {navItems.length > 1 ? <CategoryPills items={navItems} /> : null}
+
+              <div className="mt-12 space-y-16">
+                {groups.map((g) => (
+                  <section
+                    key={g.slug}
+                    id={`cat-${g.slug}`}
+                    className="scroll-mt-[150px]"
+                  >
+                    <div className="flex items-center gap-4">
+                      <h2 className="font-display text-2xl text-ink-900 sm:text-3xl">
+                        {g.name}
+                      </h2>
+                      <span className="rounded-full bg-blush-50 px-3 py-1 text-xs font-semibold text-terracotta-500">
+                        {g.services.length}
+                      </span>
+                      <span className="h-px flex-1 bg-nude-100" aria-hidden />
+                    </div>
+                    <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                      {g.services.map((s) => (
+                        <ServiceCard key={s.id} service={s} />
+                      ))}
+                    </div>
+                  </section>
+                ))}
+              </div>
+            </>
           )}
         </div>
       </section>
